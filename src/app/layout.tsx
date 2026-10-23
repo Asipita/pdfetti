@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "../styles/site.css";
+import "../styles/marketing.css";
 const inter = localFont({
   src: [
     { path: "../fonts/Inter-Regular.otf", weight: "400", style: "normal" },
