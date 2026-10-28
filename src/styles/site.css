@@ -580,6 +580,11 @@
   line-height: 1.7;
   color: var(--muted-foreground);
 }
+.prose-page .prose-inline-link {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;

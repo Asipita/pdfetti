@@ -127,15 +127,26 @@
   margin-top: 40px;
 }
 
-.home-hero-notes span {
+.home-hero-notes > * {
   font-size: 12px;
   color: #b7aaad;
 }
 
-.home-hero-notes span + span::before {
+.home-hero-notes > * + *::before {
   content: "·";
   margin: 0 14px;
   color: #ff6b6b;
+}
+
+.home-hero-notes a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+}
+
+.home-hero-notes a:hover {
+  color: #ff8b8b;
 }
 
 .home .upload-area {
@@ -662,11 +673,11 @@
     font-size: clamp(58px, 14.5vw, 73px);
   }
 
-  .home-hero-notes span {
+  .home-hero-notes > * {
     font-size: 11px;
   }
 
-  .home-hero-notes span + span::before {
+  .home-hero-notes > * + *::before {
     margin: 0 7px;
   }
 

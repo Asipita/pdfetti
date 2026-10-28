@@ -37,6 +37,10 @@ export default function Privacy() {
         <p>
           The website loads its own code, fonts, and PDF rendering worker. There
           are no third-party analytics or advertising scripts in this version.
+          You can review the source on{" "}
+          <a className="prose-inline-link" href="https://github.com/asipita/pdfetti" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>.
         </p>
         <h2>Your control</h2>
         <p>

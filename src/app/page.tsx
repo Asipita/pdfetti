@@ -24,12 +24,14 @@ const features = [
       "Download the finished PDF in one click. No account, watermark, or payment step.",
   },
 ];
+const repositoryUrl = "https://github.com/asipita/pdfetti";
 
 export default function Home() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "PDFetti",
+    sameAs: repositoryUrl,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description:
@@ -49,6 +51,9 @@ export default function Home() {
             <nav aria-label="Main navigation">
               <a href="#features">Features</a>
               <a href="#privacy">Privacy</a>
+              <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
               <Link href="/editor/" className="home-nav-action">
                 Open editor <ArrowUpRight size={15} aria-hidden="true" />
               </Link>
@@ -77,6 +82,9 @@ export default function Home() {
                   <span>Free to use</span>
                   <span>Works in your browser</span>
                   <span>No account needed</span>
+                  <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">
+                    Open source on GitHub <ArrowUpRight size={12} aria-hidden="true" />
+                  </a>
                 </div>
               </div>
               <UploadArea />
@@ -211,6 +219,7 @@ export default function Home() {
           <nav aria-label="Footer">
             <Link href="/privacy/">Privacy</Link>
             <Link href="/editor/">Editor</Link>
+            <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
           </nav>
         </div>
       </footer>

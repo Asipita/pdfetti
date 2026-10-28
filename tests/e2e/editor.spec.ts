@@ -18,6 +18,11 @@ test("marketing page is responsive and editor can export local edits", async ({
   await expect(
     page.getByRole("heading", { name: /Your PDF, finished/ }),
   ).toBeVisible();
+  await expect(page.locator('a[href="https://github.com/asipita/pdfetti"]')).toHaveCount(3);
+  const structuredData = JSON.parse(
+    (await page.locator('script[type="application/ld+json"]').textContent()) || "{}",
+  );
+  expect(structuredData.sameAs).toBe("https://github.com/asipita/pdfetti");
   await expect(page.locator(".home-product-desktop")).toHaveJSProperty(
     "naturalWidth",
     1440,
@@ -92,6 +97,7 @@ test("mobile and tablet layouts avoid horizontal overflow", async ({
         width === 390 ? ".home-product-mobile" : ".home-product-desktop",
       ),
     ).toHaveJSProperty("naturalWidth", width === 390 ? 390 : 1440);
+    await expect(page.getByRole("link", { name: /Open source on GitHub/ })).toBeVisible();
     await page.screenshot({
       path: join(testInfo.outputDir, `home-${width}.png`),
       fullPage: true,
