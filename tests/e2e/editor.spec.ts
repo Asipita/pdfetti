@@ -188,7 +188,7 @@ test("invalid files fail clearly; annotations move, resize, and undo", async ({
   const widthBefore = await ann.evaluate((e) =>
     parseFloat((e as HTMLElement).style.width),
   );
-  const resize = page.getByLabel("Resize annotation");
+  const resize = page.getByRole("button", { name: "Resize annotation", exact: true });
   const rb = await resize.boundingBox();
   if (!rb) throw new Error("No resize handle");
   await page.mouse.move(rb.x + rb.width / 2, rb.y + rb.height / 2);

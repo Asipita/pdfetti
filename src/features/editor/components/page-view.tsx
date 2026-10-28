@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { PDFDocumentProxy, PDFPageProxy } from "pdfjs-dist";
-import { Grip, X } from "lucide-react";
 import { useEditor } from "../store/use-editor";
-import type { Annotation } from "../types";
+import { clampScreenRect, type Guides } from "../geometry";
+import { AnnotationView } from "./annotation-view";
+import { registerViewport, clearPageViewport } from "../viewport-registry";
 import {
   pdfToViewport,
   rectFromPdf,
@@ -36,7 +37,9 @@ export function PageView({
   onVisible: (page: number) => void;
 }) {
   const holder = useRef<HTMLDivElement>(null),
-    canvas = useRef<HTMLCanvasElement>(null);
+    canvas = useRef<HTMLCanvasElement>(null),
+    verticalGuide = useRef<HTMLDivElement>(null),
+    horizontalGuide = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(pageNumber === 1),
     [page, setPage] = useState<PDFPageProxy | null>(null),
     [widgets, setWidgets] = useState<Widget[]>([]),
@@ -45,7 +48,8 @@ export function PageView({
     add = useEditor((s) => s.add),
     select = useEditor((s) => s.select),
     setPageNumber = useEditor((s) => s.setPage),
-    signature = useEditor((s) => s.signature);
+    signature = useEditor((s) => s.signature),
+    textPreferences = useEditor((s) => s.textPreferences);
   const annotations = useEditor((s) => s.annotations);
   const ann = annotations.filter((a) => a.page === pageNumber);
   useEffect(() => {
@@ -88,6 +92,7 @@ export function PageView({
       Math.min(1.28, Math.max(0.3, (availableWidth - 32) / base.width)) * zoom;
     const viewport = page.getViewport({ scale });
     setView(viewport);
+    registerViewport(pageNumber, viewport);
     const c = canvas.current;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     c.width = Math.floor(viewport.width * dpr);
@@ -104,11 +109,24 @@ export function PageView({
       transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : undefined,
     });
     task.promise.catch(() => {});
-    return () => task.cancel();
-  }, [page, zoom, availableWidth, visible]);
+    return () => {
+      task.cancel();
+      clearPageViewport(pageNumber);
+    };
+  }, [page, pageNumber, zoom, availableWidth, visible]);
   const width = view?.width || Math.min(availableWidth - 32, 700),
     height = view?.height || width * 1.3;
-  function createAt(e: React.PointerEvent<HTMLDivElement>) {
+  const showGuides = useCallback((guides: Guides) => {
+    if (verticalGuide.current) {
+      verticalGuide.current.style.display = guides.vertical === null ? "none" : "block";
+      if (guides.vertical !== null) verticalGuide.current.style.left = `${guides.vertical}px`;
+    }
+    if (horizontalGuide.current) {
+      horizontalGuide.current.style.display = guides.horizontal === null ? "none" : "block";
+      if (guides.horizontal !== null) horizontalGuide.current.style.top = `${guides.horizontal}px`;
+    }
+  }, []);
+  function createAt(e: React.MouseEvent<HTMLDivElement>) {
     if (!view) return;
     if (tool === "select") {
       if (!(e.target as HTMLElement).closest("[data-annotation],[data-widget]"))
@@ -123,13 +141,20 @@ export function PageView({
     const box = e.currentTarget.getBoundingClientRect();
     const left = e.clientX - box.left,
       top = e.clientY - box.top;
-    const p = viewportToPdf(view, { x: left, y: top });
+    const size = tool === "signature"
+      ? { width: 190, height: 80 }
+      : tool === "check"
+        ? { width: 34, height: 34 }
+        : { width: 220, height: 52 };
+    const placement = clampScreenRect(
+      { left, top, ...size }, view.width, view.height,
+    );
     const r = viewportRectToPdf(
       view,
-      left,
-      top,
-      tool === "signature" ? 190 : tool === "check" ? 34 : 220,
-      tool === "signature" ? 80 : tool === "check" ? 34 : 52,
+      placement.left,
+      placement.top,
+      placement.width,
+      placement.height,
     );
     const id = crypto.randomUUID();
     if (tool === "signature") {
@@ -168,8 +193,7 @@ export function PageView({
         width: r.width,
         height: r.height,
         text: "",
-        fontSize: 16,
-        color: "#271f22",
+        ...textPreferences,
       });
     setPageNumber(pageNumber);
   }
@@ -184,7 +208,7 @@ export function PageView({
       <div
         className={`pdf-page ${tool !== "select" ? "pdf-page--placing" : ""}`}
         style={{ width, height }}
-        onPointerDown={createAt}
+        onClick={createAt}
       >
         <canvas ref={canvas} aria-hidden="true" />
         {view && (
@@ -196,9 +220,17 @@ export function PageView({
             </div>
             <div className="page-overlay">
               {ann.map((a) => (
-                <AnnotationView key={a.id} annotation={a} viewport={view} />
+                <AnnotationView
+                  key={a.id}
+                  annotation={a}
+                  viewport={view}
+                  others={ann}
+                  onGuides={showGuides}
+                />
               ))}
             </div>
+            <div ref={verticalGuide} className="annotation-guide annotation-guide--vertical" />
+            <div ref={horizontalGuide} className="annotation-guide annotation-guide--horizontal" />
             {tool === "draw" && (
               <DrawingLayer pageNumber={pageNumber} viewport={view} />
             )}
@@ -294,238 +326,6 @@ function WidgetField({
       </select>
     );
   return null;
-}
-function AnnotationView({
-  annotation: a,
-  viewport,
-}: {
-  annotation: Annotation;
-  viewport: ViewportLike;
-}) {
-  const selected = useEditor((s) => s.selectedId === a.id),
-    select = useEditor((s) => s.select),
-    update = useEditor((s) => s.update),
-    remove = useEditor((s) => s.remove);
-  const rect = rectFromPdf(viewport, a);
-  const [draft, setDraft] = useState(a.kind === "text" ? a.text : "");
-  useEffect(() => {
-    if (a.kind === "text") setDraft(a.text);
-  }, [a]);
-  const interaction = useRef<{
-    type: "move" | "resize";
-    startX: number;
-    startY: number;
-    rect: { left: number; top: number; width: number; height: number };
-  } | null>(null);
-  const element = useRef<HTMLDivElement>(null);
-  function start(e: React.PointerEvent, type: "move" | "resize") {
-    e.stopPropagation();
-    select(a.id);
-    interaction.current = { type, startX: e.clientX, startY: e.clientY, rect };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  }
-  function end(e: React.PointerEvent) {
-    const d = interaction.current;
-    if (!d) return;
-    interaction.current = null;
-    const dx = e.clientX - d.startX,
-      dy = e.clientY - d.startY;
-    const r =
-      d.type === "move"
-        ? {
-            left: d.rect.left + dx,
-            top: d.rect.top + dy,
-            width: d.rect.width,
-            height: d.rect.height,
-          }
-        : {
-            left: d.rect.left,
-            top: d.rect.top,
-            width: Math.max(28, d.rect.width + dx),
-            height: Math.max(22, d.rect.height + dy),
-          };
-    update(a.id, viewportRectToPdf(viewport, r.left, r.top, r.width, r.height));
-  }
-  function moving(e: React.PointerEvent) {
-    const d = interaction.current;
-    if (!d || !element.current) return;
-    const dx = e.clientX - d.startX,
-      dy = e.clientY - d.startY;
-    Object.assign(
-      element.current.style,
-      d.type === "move"
-        ? { left: `${d.rect.left + dx}px`, top: `${d.rect.top + dy}px` }
-        : {
-            width: `${Math.max(28, d.rect.width + dx)}px`,
-            height: `${Math.max(22, d.rect.height + dy)}px`,
-          },
-    );
-  }
-  return (
-    <div
-      ref={element}
-      data-annotation
-      className={`annotation annotation--${a.kind} ${selected ? "annotation--selected" : ""}`}
-      style={{
-        left: rect.left,
-        top: rect.top,
-        width: rect.width,
-        height: rect.height,
-      }}
-      onPointerDown={(e) => {
-        e.stopPropagation();
-        select(a.id);
-      }}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {a.kind === "text" ? (
-        <textarea
-          autoFocus={selected && a.text === ""}
-          value={draft}
-          placeholder="Type here"
-          aria-label="Text annotation"
-          style={{ fontSize: a.fontSize * viewport.scale, color: a.color }}
-          onChange={(e) => setDraft(e.target.value)}
-          onBlur={() => {
-            if (draft !== a.text) update(a.id, { text: draft });
-          }}
-        />
-      ) : a.kind === "signature" ? (
-        <img src={a.dataUrl} alt="Signature" draggable={false} />
-      ) : a.kind === "check" ? (
-        <svg
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          aria-label="Checkmark"
-        >
-          <path
-            d="M14 51 L39 75 L87 20"
-            fill="none"
-            stroke={a.color}
-            strokeWidth="12"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ) : (
-        <svg viewBox={`0 0 ${rect.width} ${rect.height}`} aria-label="Drawing">
-          {a.points.length > 1 && (
-            <polyline
-              points={a.points
-                .map((p) => {
-                  const v = pdfToViewport(viewport, p);
-                  return `${v.x - rect.left},${v.y - rect.top}`;
-                })
-                .join(" ")}
-              fill="none"
-              stroke={a.color}
-              strokeWidth={a.strokeWidth * viewport.scale}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          )}
-        </svg>
-      )}
-      {selected && (
-        <>
-          <div
-            className="annotation-move"
-            role="button"
-            tabIndex={0}
-            aria-label="Move annotation"
-            onPointerDown={(e) => start(e, "move")}
-            onPointerMove={moving}
-            onPointerUp={end}
-            onKeyDown={(e) => {
-              if (
-                ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(
-                  e.key,
-                )
-              ) {
-                e.preventDefault();
-                const step = e.shiftKey ? 10 : 1;
-                const dx =
-                  e.key === "ArrowLeft"
-                    ? -step
-                    : e.key === "ArrowRight"
-                      ? step
-                      : 0;
-                const dy =
-                  e.key === "ArrowUp"
-                    ? -step
-                    : e.key === "ArrowDown"
-                      ? step
-                      : 0;
-                update(
-                  a.id,
-                  viewportRectToPdf(
-                    viewport,
-                    rect.left + dx,
-                    rect.top + dy,
-                    rect.width,
-                    rect.height,
-                  ),
-                );
-              }
-            }}
-          >
-            <Grip size={14} />
-          </div>
-          <button
-            className="annotation-delete"
-            aria-label="Delete annotation"
-            onClick={(e) => {
-              e.stopPropagation();
-              remove(a.id);
-            }}
-          >
-            <X size={13} />
-          </button>
-          <div
-            className="annotation-resize"
-            role="button"
-            tabIndex={0}
-            aria-label="Resize annotation"
-            onPointerDown={(e) => start(e, "resize")}
-            onPointerMove={moving}
-            onPointerUp={end}
-            onKeyDown={(e) => {
-              if (
-                ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(
-                  e.key,
-                )
-              ) {
-                e.preventDefault();
-                const step = e.shiftKey ? 10 : 1;
-                const dx =
-                  e.key === "ArrowLeft"
-                    ? -step
-                    : e.key === "ArrowRight"
-                      ? step
-                      : 0;
-                const dy =
-                  e.key === "ArrowUp"
-                    ? -step
-                    : e.key === "ArrowDown"
-                      ? step
-                      : 0;
-                update(
-                  a.id,
-                  viewportRectToPdf(
-                    viewport,
-                    rect.left,
-                    rect.top,
-                    Math.max(28, rect.width + dx),
-                    Math.max(22, rect.height + dy),
-                  ),
-                );
-              }
-            }}
-          />
-        </>
-      )}
-    </div>
-  );
 }
 function DrawingLayer({
   pageNumber,

@@ -1,0 +1,5 @@
+Google Fonts repository: https://github.com/google/fonts
+Pinned revision: e7db6ca603fd4862010383ff17ffd6cc4ffac1c0
+Inter-Regular.ttf and Inter-Bold.ttf are static instances (optical size 14,
+weights 400 and 700) of the pinned Google Fonts Inter variable TrueType file,
+generated with FontTools varLib.instancer. The Inter OFL license is in inter/OFL.txt.

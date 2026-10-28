@@ -28,6 +28,10 @@ import { loadPdf } from "@/features/pdf/loader";
 import { useEditor } from "../store/use-editor";
 import type { Tool } from "../types";
 import { PageView, PageThumbnail } from "./page-view";
+import { TextProperties } from "./text-properties";
+import { getPageViewport } from "../viewport-registry";
+import { annotationGeometryPatch, clampScreenRect } from "../geometry";
+import { rectFromPdf } from "@/features/pdf/coordinates";
 import { SignatureDialog } from "@/features/signatures/signature-dialog";
 const tools: { id: Tool; label: string; Icon: typeof MousePointer2 }[] = [
   { id: "select", label: "Select", Icon: MousePointer2 },
@@ -149,17 +153,38 @@ export function Editor() {
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const target = e.target as HTMLElement;
-      if (target.closest("input,textarea,select,[contenteditable]")) return;
+      if (target.closest("input,textarea,select,[contenteditable],[role=dialog]")) return;
       const s = state.getState();
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "z") {
         e.preventDefault();
         e.shiftKey ? s.redo() : s.undo();
+      } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "y") {
+        e.preventDefault();
+        s.redo();
       } else if (
         (e.key === "Delete" || e.key === "Backspace") &&
         s.selectedId
       ) {
         e.preventDefault();
         s.remove(s.selectedId);
+      } else if (
+        s.selectedId &&
+        ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key) &&
+        !e.metaKey && !e.ctrlKey && !e.altKey
+      ) {
+        const selected = s.annotations.find((a) => a.id === s.selectedId);
+        const viewport = selected && getPageViewport(selected.page);
+        if (!selected || !viewport) return;
+        e.preventDefault();
+        const step = (e.shiftKey ? 10 : 1) * viewport.scale;
+        const dx = e.key === "ArrowLeft" ? -step : e.key === "ArrowRight" ? step : 0;
+        const dy = e.key === "ArrowUp" ? -step : e.key === "ArrowDown" ? step : 0;
+        const rect = rectFromPdf(viewport, selected);
+        const next = clampScreenRect(
+          { ...rect, left: rect.left + dx, top: rect.top + dy },
+          viewport.width, viewport.height,
+        );
+        s.update(selected.id, annotationGeometryPatch(selected, viewport, next));
       } else if (e.key === "Escape") {
         s.select(null);
         s.setTool("select");
@@ -286,7 +311,18 @@ export function Editor() {
               >
                 <Minus size={17} />
               </button>
-              <span className="zoom-value">{Math.round(zoom * 100)}%</span>
+              <select
+                className="zoom-value"
+                aria-label="Zoom level"
+                value={zoom}
+                onChange={(e) => state.getState().setZoom(Number(e.target.value))}
+              >
+                {![0.5, 0.75, 1, 1.25, 1.5, 2].includes(zoom) &&
+                  <option value={zoom}>{Math.round(zoom * 100)}%</option>}
+                {[0.5, 0.75, 1, 1.25, 1.5, 2].map((value) =>
+                  <option key={value} value={value}>{Math.round(value * 100)}%</option>,
+                )}
+              </select>
               <button
                 className="icon-only"
                 aria-label="Zoom in"
@@ -399,36 +435,12 @@ export function Editor() {
                       : "Checkmark"}
               </span>
               {selected.kind === "text" && (
-                <>
-                  <label>
-                    Size{" "}
-                    <input
-                      type="number"
-                      min="8"
-                      max="72"
-                      value={selected.fontSize}
-                      onChange={(e) =>
-                        state.getState().update(selected.id, {
-                          fontSize: Number(e.target.value),
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Color{" "}
-                    <input
-                      type="color"
-                      value={selected.color}
-                      onChange={(e) =>
-                        state
-                          .getState()
-                          .update(selected.id, { color: e.target.value })
-                      }
-                    />
-                  </label>
-                </>
+                <TextProperties
+                  annotation={selected}
+                  onUpdate={(patch) => state.getState().update(selected.id, patch)}
+                />
               )}
-              <button onClick={() => state.getState().remove(selected.id)}>
+              <button className="property-delete" onClick={() => state.getState().remove(selected.id)}>
                 Delete
               </button>
               <button

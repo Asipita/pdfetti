@@ -1,0 +1,70 @@
+@font-face {
+  font-family: "PDFetti Document Inter";
+  src: url("/document-fonts/inter/Inter-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Document Inter";
+  src: url("/document-fonts/inter/Inter-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Source Serif";
+  src: url("/document-fonts/sourceserif4/SourceSerif4[opsz,wght].ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Source Serif";
+  src: url("/document-fonts/sourceserif4/SourceSerif4-Italic[opsz,wght].ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Plex Mono";
+  src: url("/document-fonts/ibmplexmono/IBMPlexMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Plex Mono";
+  src: url("/document-fonts/ibmplexmono/IBMPlexMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Plex Mono";
+  src: url("/document-fonts/ibmplexmono/IBMPlexMono-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Plex Mono";
+  src: url("/document-fonts/ibmplexmono/IBMPlexMono-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Caveat";
+  src: url("/document-fonts/caveat/Caveat[wght].ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PDFetti Patrick Hand";
+  src: url("/document-fonts/patrickhand/PatrickHand-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

@@ -7,12 +7,20 @@ export type AnnotationBase = {
   width: number;
   height: number;
 };
+export type TextAlignment = "left" | "center" | "right";
+export type TextFormatting = {
+  fontId: string;
+  fontSize: number;
+  color: string;
+  align: TextAlignment;
+  lineHeight: number;
+  bold: boolean;
+  italic: boolean;
+};
 export type TextAnnotation = AnnotationBase & {
   kind: "text";
   text: string;
-  fontSize: number;
-  color: string;
-};
+} & Partial<TextFormatting>;
 export type SignatureAnnotation = AnnotationBase & {
   kind: "signature";
   dataUrl: string;

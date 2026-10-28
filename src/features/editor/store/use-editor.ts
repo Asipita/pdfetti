@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import type { Annotation, FormValue, Tool } from "../types";
+import type { TextFormatting } from "../types";
+import { defaultTextFormatting, resolveTextFormatting } from "@/features/fonts/registry";
 type Snapshot = { annotations: Annotation[]; forms: Record<string, FormValue> };
 type State = {
   file: File | null;
@@ -8,6 +10,8 @@ type State = {
   currentPage: number;
   tool: Tool;
   selectedId: string | null;
+  editingId: string | null;
+  textPreferences: TextFormatting;
   zoom: number;
   annotations: Annotation[];
   forms: Record<string, FormValue>;
@@ -20,10 +24,12 @@ type State = {
   clearDocument: () => void;
   setTool: (tool: Tool) => void;
   select: (id: string | null) => void;
+  setEditing: (id: string | null) => void;
   setPage: (page: number) => void;
   setZoom: (zoom: number) => void;
   add: (a: Annotation) => void;
   update: (id: string, patch: Partial<Annotation>) => void;
+  setTextPreferences: (patch: Partial<TextFormatting>) => void;
   remove: (id: string) => void;
   setForm: (key: string, value: FormValue) => void;
   undo: () => void;
@@ -48,6 +54,8 @@ export const useEditor = create<State>((set) => ({
   currentPage: 1,
   tool: "select",
   selectedId: null,
+  editingId: null,
+  textPreferences: defaultTextFormatting,
   zoom: 1,
   annotations: [],
   forms: {},
@@ -67,6 +75,7 @@ export const useEditor = create<State>((set) => ({
       past: [],
       future: [],
       selectedId: null,
+      editingId: null,
       signature: null,
       error: null,
       zoom: 1,
@@ -81,17 +90,27 @@ export const useEditor = create<State>((set) => ({
       past: [],
       future: [],
       selectedId: null,
+      editingId: null,
       signature: null,
     }),
-  setTool: (tool) => set({ tool, selectedId: null }),
-  select: (selectedId) => set({ selectedId }),
+  setTool: (tool) => set({ tool, selectedId: null, editingId: null }),
+  select: (selectedId) =>
+    set((s) => ({
+      selectedId,
+      editingId: selectedId === s.selectedId ? s.editingId : null,
+    })),
+  setEditing: (editingId) =>
+    set((s) => ({ editingId, selectedId: editingId ?? s.selectedId })),
   setPage: (currentPage) => set({ currentPage }),
-  setZoom: (zoom) => set({ zoom: Math.max(0.5, Math.min(2, zoom)) }),
+  setZoom: (zoom) => set({ zoom: Math.round(Math.max(0.5, Math.min(2, zoom)) * 100) / 100 }),
   add: (a) =>
     set((s) =>
       record(s, {
         annotations: [...s.annotations, a],
         selectedId: a.id,
+        editingId: a.kind === "text" ? a.id : null,
+        textPreferences:
+          a.kind === "text" ? resolveTextFormatting(a) : s.textPreferences,
         tool: "select",
       }),
     ),
@@ -103,13 +122,18 @@ export const useEditor = create<State>((set) => ({
       if (JSON.stringify(old) === JSON.stringify(next)) return s;
       return record(s, {
         annotations: s.annotations.map((a) => (a.id === id ? next : a)),
+        textPreferences:
+          next.kind === "text" ? resolveTextFormatting(next) : s.textPreferences,
       });
     }),
+  setTextPreferences: (patch) =>
+    set((s) => ({ textPreferences: { ...s.textPreferences, ...patch } })),
   remove: (id) =>
     set((s) =>
       record(s, {
         annotations: s.annotations.filter((a) => a.id !== id),
         selectedId: null,
+        editingId: null,
       }),
     ),
   setForm: (key, value) =>
@@ -126,7 +150,9 @@ export const useEditor = create<State>((set) => ({
         forms: prior.forms,
         past: s.past.slice(0, -1),
         future: [snapshot(s), ...s.future],
-        selectedId: null,
+        selectedId: s.selectedId && prior.annotations.some((a) => a.id === s.selectedId)
+          ? s.selectedId : null,
+        editingId: null,
       };
     }),
   redo: () =>
@@ -138,7 +164,9 @@ export const useEditor = create<State>((set) => ({
         forms: next.forms,
         past: [...s.past, snapshot(s)],
         future: s.future.slice(1),
-        selectedId: null,
+        selectedId: s.selectedId && next.annotations.some((a) => a.id === s.selectedId)
+          ? s.selectedId : null,
+        editingId: null,
       };
     }),
   setExporting: (exporting) => set({ exporting }),
