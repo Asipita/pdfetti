@@ -45,3 +45,7 @@ Document text can use Inter, Source Serif 4, IBM Plex Mono, Caveat, or Patrick H
 - XFA forms are rejected with an explanation. Some complex AcroForms and unusual page rotations need further compatibility work.
 - Browser and PDF font engines can wrap a line a few pixels differently for some scripts or punctuation. Export uses the bundled font's actual widths and preserves explicit line breaks.
 - Files over 50 MB are refused to keep in-browser editing responsive.
+
+## License
+
+PDFetti's original code and documentation are licensed under [Apache-2.0](LICENSE). Bundled fonts and PDF rendering assets retain their own licenses; see [Third-party licenses](THIRD_PARTY_LICENSES.md). The package remains marked `private` to prevent accidental npm publication; that setting does not restrict use of the source under Apache-2.0.
