@@ -5,7 +5,9 @@ import {
   ArrowUpRight,
   ArrowUpDown,
   FilePenLine,
+  Files,
   LockKeyhole,
+  Plus,
   Scissors,
 } from "lucide-react";
 import { Brand } from "@/components/shared/brand";
@@ -41,7 +43,7 @@ export default function Home() {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description:
-      "Free browser-based PDF tools for annotating documents, extracting pages, and organizing page order.",
+      "Free browser-based PDF tools for annotating, extracting pages, organizing, and merging PDFs.",
   };
 
   return (
@@ -117,6 +119,22 @@ export default function Home() {
                   <span className="home-tool-title">Organize pages</span>
                   <p>Reorder, rotate, or remove pages.</p>
                   <span className="home-tool-action">Organize PDF <ArrowUpRight size={16} aria-hidden="true" /></span>
+                </div>
+              </Link>
+              <Link href="/merge-pdf/" className="home-tool-card home-tool-card--merge">
+                <div className="home-tool-art home-tool-art--merge" aria-hidden="true">
+                  <div className="home-art-merge-files">
+                    <span className="home-art-page"><i /><i /><i /></span>
+                    <span className="home-art-page"><i /><i /><i /></span>
+                    <Plus className="home-art-merge-plus" size={23} />
+                    <span className="home-art-page is-picked"><i /><i /><i /></span>
+                  </div>
+                  <span className="home-art-note"><Files size={14} /> Combine PDFs</span>
+                </div>
+                <div className="home-tool-card-copy">
+                  <span className="home-tool-title">Merge PDFs</span>
+                  <p>Combine files in the order you choose.</p>
+                  <span className="home-tool-action">Merge PDFs <ArrowUpRight size={16} aria-hidden="true" /></span>
                 </div>
               </Link>
             </div>

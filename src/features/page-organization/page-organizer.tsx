@@ -234,6 +234,7 @@ export function PageOrganizer() {
           <nav aria-label="Main navigation">
             <a href="#how-it-works">How it works</a>
             <Link href="/extract-pdf-pages/">Extract pages</Link>
+            <Link href="/merge-pdf/">Merge PDFs</Link>
             <a href="https://github.com/asipita/pdfetti" target="_blank" rel="noopener noreferrer">Open source</a>
             <Link href="/editor/" className="ui-button ui-button--outline nav-action">Open PDF editor</Link>
           </nav>
@@ -344,7 +345,7 @@ export function PageOrganizer() {
           </div>
         </section>
       </main>
-      <footer className="site-footer"><div className="container footer-inner"><Brand /><span>PDF tools that keep things simple.</span><nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/editor/">PDF editor</a><a href="/extract-pdf-pages/">Extract pages</a><a href="https://github.com/asipita/pdfetti" target="_blank" rel="noopener noreferrer">GitHub</a></nav></div></footer>
+      <footer className="site-footer"><div className="container footer-inner"><Brand /><span>PDF tools that keep things simple.</span><nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/editor/">PDF editor</a><a href="/extract-pdf-pages/">Extract pages</a><a href="/merge-pdf/">Merge PDFs</a><a href="https://github.com/asipita/pdfetti" target="_blank" rel="noopener noreferrer">GitHub</a></nav></div></footer>
     </div>
   );
 }

@@ -93,7 +93,7 @@
 
 .home-tool-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -130,6 +130,11 @@
 
 .home-tool-art--separation {
   background: linear-gradient(125deg, #352d30, #403235);
+}
+
+.home-tool-art--organization,
+.home-tool-art--merge {
+  background: linear-gradient(125deg, #382f32, #403237);
 }
 
 .home-art-paper {
@@ -244,6 +249,26 @@
 .home-art-page.is-picked {
   border: 2px solid #ff777e;
   opacity: 1;
+}
+
+.home-art-merge-files {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transform: rotate(-3deg);
+}
+
+.home-art-merge-files .home-art-page:first-child {
+  transform: translateY(-8px);
+}
+
+.home-art-merge-files .home-art-page:nth-of-type(2) {
+  transform: translateY(8px);
+}
+
+.home-art-merge-plus {
+  flex: none;
+  color: #ff898f;
 }
 
 .home-art-page i {
