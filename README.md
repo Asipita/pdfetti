@@ -28,6 +28,7 @@ Playwright expects the static build at `http://localhost:3000`; serve `out/` bef
 - `src/app`: statically rendered marketing, privacy, and editor routes, plus SEO output.
 - `src/features/editor`: Zustand state, toolbar, page views, annotation overlays, and signature UI.
 - `src/features/page-separation`: standalone page selection, range parsing, previews, and extraction into a new PDF. This feature is independent of the annotation editor.
+- `src/features/page-organization`: standalone page reordering, rotation, removal, preview, and export. This feature is independent of the annotation editor.
 - `src/features/fonts`: the document font registry and shared text wrapping rules.
 - `src/features/pdf`: local file handoff, PDF.js loading, coordinate conversion, and pdf-lib export with embedded fonts.
 - `src/styles`: shared semantic tokens and responsive component styles.
@@ -35,6 +36,8 @@ Playwright expects the static build at `http://localhost:3000`; serve `out/` bef
 PDF.js renders original pages and provides the form widget rectangles. Overlay placement is recorded in PDF page coordinates and applied with pdf-lib at download time. Interactive form values remain editable in the output PDF.
 
 The **Extract PDF Pages** tool lives at `/extract-pdf-pages/`. It lets people select pages from thumbnails or enter ranges such as `1-3, 5, 8-10`, then downloads a new PDF in the original page order. PDF.js previews and pdf-lib extraction run in the browser without uploading the source document.
+
+The **Organize PDF** tool lives at `/organize-pdf/`. It lets people reorder, rotate, and remove selected pages before downloading an organized copy. Changes are processed locally in the browser.
 
 ## Editing text
 

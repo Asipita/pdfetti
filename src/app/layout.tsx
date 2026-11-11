@@ -4,6 +4,7 @@ import "./globals.css";
 import "../styles/site.css";
 import "../styles/marketing.css";
 import "../styles/page-separation.css";
+import "../styles/page-organization.css";
 import "../styles/document-fonts.css";
 const inter = localFont({
   src: [
