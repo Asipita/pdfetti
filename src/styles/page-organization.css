@@ -179,21 +179,15 @@
 }
 
 .organize-drag-handle {
-  display: inline-flex;
-  width: max-content;
-  min-width: 48px;
+  display: grid;
+  width: 27px;
   height: 27px;
   flex: none;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-  padding: 0 4px 0 1px;
-  border: 1px solid #e7dfe1;
+  place-items: center;
+  border: 1px solid transparent;
   border-radius: 6px;
-  background: #f8f5f5;
-  color: #62575b;
-  font-size: 9px;
-  font-weight: 650;
+  background: transparent;
+  color: #a99da0;
   user-select: none;
 }
 
@@ -202,8 +196,8 @@
 }
 
 .organize-drag-handle[draggable="true"]:hover {
-  border-color: #d5b7bd;
-  background: #fff1f3;
+  border-color: #eee2e5;
+  background: #f8f2f3;
   color: var(--primary);
 }
 
@@ -380,9 +374,7 @@
   }
 
   .organize-drag-handle {
-    min-width: 45px;
-    padding-right: 3px;
-    font-size: 9px;
+    width: 26px;
   }
 
   .organize-page-preview {

@@ -318,7 +318,6 @@ export function PdfMerger() {
                           }}
                         >
                           <GripVertical size={17} aria-hidden="true" />
-                          <span>Drag</span>
                         </span>
                         <FirstPagePreview document={item.preview} />
                         <div className="merge-file-details">

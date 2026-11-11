@@ -363,7 +363,6 @@ export function PageOrganizer() {
                             }}
                           >
                             <GripVertical size={15} aria-hidden="true" />
-                            <span>Drag</span>
                           </span>
                         </div>
                         <PagePreview document={pdf} pageNumber={page.originalIndex + 1} rotation={page.rotation} />

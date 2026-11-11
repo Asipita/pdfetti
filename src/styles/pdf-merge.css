@@ -124,7 +124,7 @@
 .merge-file-item {
   position: relative;
   display: grid;
-  grid-template-columns: 28px 62px 62px minmax(0, 1fr) auto;
+  grid-template-columns: 28px 30px 62px minmax(0, 1fr) auto;
   min-height: 88px;
   align-items: center;
   gap: 14px;
@@ -189,20 +189,14 @@
 }
 
 .merge-drag-handle {
-  display: inline-flex;
-  width: max-content;
-  min-width: 58px;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 0 5px 0 2px;
-  border: 1px solid #e7dfe1;
+  display: grid;
+  width: 28px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid transparent;
   border-radius: 6px;
-  background: #f8f5f5;
-  color: #62575b;
-  font-size: 10px;
-  font-weight: 600;
+  background: transparent;
+  color: #a99da0;
   user-select: none;
 }
 
@@ -211,8 +205,8 @@
 }
 
 .merge-drag-handle[draggable="true"]:hover {
-  border-color: #d5b7bd;
-  background: #fff1f3;
+  border-color: #eee2e5;
+  background: #f8f2f3;
   color: var(--primary);
 }
 
@@ -412,7 +406,7 @@
   }
 
   .merge-file-item {
-    grid-template-columns: 24px 50px 48px minmax(0, 1fr) auto;
+    grid-template-columns: 24px 28px 48px minmax(0, 1fr) auto;
     gap: 8px;
     padding: 7px;
   }
@@ -424,12 +418,6 @@
 
   .merge-file-preview canvas {
     max-height: 58px;
-  }
-
-  .merge-drag-handle {
-    min-width: 47px;
-    padding-right: 3px;
-    font-size: 9px;
   }
 
   .merge-item-actions {
