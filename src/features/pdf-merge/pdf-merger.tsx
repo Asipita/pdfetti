@@ -11,6 +11,7 @@ import {
   Check,
   FileUp,
   Files,
+  GripVertical,
   LockKeyhole,
   Plus,
   Trash2,
@@ -94,6 +95,8 @@ export function PdfMerger() {
   const [loading, setLoading] = useState(false);
   const [merging, setMerging] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [draggedFileId, setDraggedFileId] = useState("");
+  const [dragTargetId, setDragTargetId] = useState("");
   const [success, setSuccess] = useState(false);
 
   useEffect(() => () => {
@@ -149,6 +152,20 @@ export function PdfMerger() {
     setFiles((current) => {
       const next = [...current];
       [next[index], next[nextIndex]] = [next[nextIndex], next[index]];
+      return next;
+    });
+    setSuccess(false);
+  };
+
+  const moveFileTo = (sourceId: string, targetId: string) => {
+    if (loading || merging || sourceId === targetId) return;
+    setFiles((current) => {
+      const sourceIndex = current.findIndex((item) => item.id === sourceId);
+      const targetIndex = current.findIndex((item) => item.id === targetId);
+      if (sourceIndex < 0 || targetIndex < 0) return current;
+      const next = [...current];
+      const [moved] = next.splice(sourceIndex, 1);
+      next.splice(targetIndex, 0, moved);
       return next;
     });
     setSuccess(false);
@@ -256,14 +273,39 @@ export function PdfMerger() {
                   </div>
 
                   <div className="merge-list-heading">
-                    <div><span className="separate-step">01</span><div><h2>Set the file order</h2><p>Each PDF’s pages stay together in the order shown.</p></div></div>
+                    <div><span className="separate-step">01</span><div><h2>Set the file order</h2><p>Drag files into order or use the up and down buttons. Each PDF’s pages stay together.</p></div></div>
                     <span className="merge-list-count">{files.length} files</span>
                   </div>
 
                   <ol className="merge-file-list" aria-label="PDF merge order">
                     {files.map((item, index) => (
-                      <li className="merge-file-item" key={item.id}>
+                      <li
+                        className={`merge-file-item${draggedFileId === item.id ? " is-dragging" : ""}${dragTargetId === item.id ? " is-drop-target" : ""}`}
+                        key={item.id}
+                        draggable={!loading && !merging}
+                        onDragStart={(event) => {
+                          event.dataTransfer.effectAllowed = "move";
+                          event.dataTransfer.setData("text/plain", item.id);
+                          setDraggedFileId(item.id);
+                        }}
+                        onDragOver={(event) => {
+                          event.preventDefault();
+                          event.dataTransfer.dropEffect = "move";
+                          if (item.id !== draggedFileId) setDragTargetId(item.id);
+                        }}
+                        onDrop={(event) => {
+                          event.preventDefault();
+                          moveFileTo(event.dataTransfer.getData("text/plain"), item.id);
+                          setDraggedFileId("");
+                          setDragTargetId("");
+                        }}
+                        onDragEnd={() => {
+                          setDraggedFileId("");
+                          setDragTargetId("");
+                        }}
+                      >
                         <span className="merge-file-position" aria-label={`File ${index + 1}`}>{index + 1}</span>
+                        <span className="merge-drag-handle" aria-hidden="true" title="Drag to reorder"><GripVertical size={17} /></span>
                         <FirstPagePreview document={item.preview} />
                         <div className="merge-file-details">
                           <strong title={item.file.name}>{item.file.name}</strong>
