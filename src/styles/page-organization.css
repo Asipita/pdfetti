@@ -100,6 +100,7 @@
 }
 
 .organize-page-card {
+  position: relative;
   min-width: 0;
   padding: 8px;
   border: 1px solid #eee7e8;
@@ -113,11 +114,51 @@
   box-shadow: 0 0 0 1px var(--primary);
 }
 
-.organize-page-select {
+.organize-page-card.is-dragging {
+  opacity: 0.42;
+}
+
+.organize-page-card.is-drop-target {
+  border-color: var(--primary);
+  background: #fff7f8;
+  box-shadow: 0 0 0 2px rgba(190, 49, 68, 0.12);
+}
+
+.organize-page-card.is-drop-before::before,
+.organize-page-card.is-drop-after::after {
+  position: absolute;
+  right: 7px;
+  left: 7px;
+  z-index: 2;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--primary);
+  content: "";
+  pointer-events: none;
+}
+
+.organize-page-card.is-drop-before::before {
+  top: -6px;
+}
+
+.organize-page-card.is-drop-after::after {
+  bottom: -6px;
+}
+
+.organize-page-topline {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.organize-page-select {
+  display: flex;
+  min-width: 0;
+  align-items: center;
   gap: 7px;
-  padding: 1px 2px 9px;
+  padding: 1px 2px;
   cursor: pointer;
 }
 
@@ -135,6 +176,47 @@
   font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.organize-drag-handle {
+  display: inline-flex;
+  width: max-content;
+  min-width: 48px;
+  height: 27px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 0 4px 0 1px;
+  border: 1px solid #e7dfe1;
+  border-radius: 6px;
+  background: #f8f5f5;
+  color: #62575b;
+  font-size: 9px;
+  font-weight: 650;
+  user-select: none;
+}
+
+.organize-drag-handle[draggable="true"] {
+  cursor: grab;
+}
+
+.organize-drag-handle[draggable="true"]:hover {
+  border-color: #d5b7bd;
+  background: #fff1f3;
+  color: var(--primary);
+}
+
+.organize-drag-handle[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.organize-drag-hint {
+  margin: 0;
+  padding: 0 24px 12px;
+  color: #817579;
+  font-size: 11px;
+  line-height: 1.5;
 }
 
 .organize-page-preview {
@@ -236,6 +318,10 @@
     padding: 16px;
   }
 
+  .organize-drag-hint {
+    padding-inline: 16px;
+  }
+
   .organize-page-preview {
     min-height: 128px;
   }
@@ -282,6 +368,21 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 9px;
     padding: 13px;
+  }
+
+  .organize-page-topline {
+    gap: 2px;
+    margin-bottom: 7px;
+  }
+
+  .organize-page-select {
+    gap: 5px;
+  }
+
+  .organize-drag-handle {
+    min-width: 45px;
+    padding-right: 3px;
+    font-size: 9px;
   }
 
   .organize-page-preview {

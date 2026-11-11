@@ -11,6 +11,7 @@ import {
   Check,
   FileUp,
   Files,
+  GripVertical,
   LockKeyhole,
   RotateCcw,
   RotateCw,
@@ -99,6 +100,8 @@ export function PageOrganizer() {
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [draggedPageIndex, setDraggedPageIndex] = useState<number | null>(null);
+  const [dropTarget, setDropTarget] = useState<{ originalIndex: number; position: "before" | "after" } | null>(null);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => () => void pdf?.destroy(), [pdf]);
@@ -163,6 +166,21 @@ export function PageOrganizer() {
       }
     }
     setPages(next);
+    setSuccess(false);
+  };
+
+  const movePageTo = (sourceOriginalIndex: number, targetOriginalIndex: number, position: "before" | "after") => {
+    if (exporting || sourceOriginalIndex === targetOriginalIndex) return;
+    setPages((current) => {
+      const sourceIndex = current.findIndex((page) => page.originalIndex === sourceOriginalIndex);
+      const targetIndex = current.findIndex((page) => page.originalIndex === targetOriginalIndex);
+      if (sourceIndex < 0 || targetIndex < 0) return current;
+      const next = [...current];
+      const [moved] = next.splice(sourceIndex, 1);
+      const adjustedTarget = targetIndex - (sourceIndex < targetIndex ? 1 : 0);
+      next.splice(adjustedTarget + (position === "after" ? 1 : 0), 0, moved);
+      return next;
+    });
     setSuccess(false);
   };
 
@@ -296,13 +314,58 @@ export function PageOrganizer() {
                     </div>
                   </div>
 
+                  <p className="organize-drag-hint">Drag a page by its handle to reorder it. The toolbar moves all selected pages.</p>
                   <div className="organize-page-grid" aria-label="PDF pages">
                     {pages.map((page, position) => (
-                      <article key={page.originalIndex} className={`organize-page-card${selected.includes(page.originalIndex) ? " is-selected" : ""}`}>
-                        <label className="organize-page-select">
-                          <input type="checkbox" checked={selected.includes(page.originalIndex)} onChange={() => updateSelection(page.originalIndex)} aria-label={`Select page ${page.originalIndex + 1}`} />
-                          <span className="organize-page-position">Position {position + 1}</span>
-                        </label>
+                      <article
+                        key={page.originalIndex}
+                        className={`organize-page-card${selected.includes(page.originalIndex) ? " is-selected" : ""}${draggedPageIndex === page.originalIndex ? " is-dragging" : ""}${dropTarget?.originalIndex === page.originalIndex ? ` is-drop-target is-drop-${dropTarget.position}` : ""}`}
+                        onDragOver={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          event.dataTransfer.dropEffect = "move";
+                          if (page.originalIndex !== draggedPageIndex) {
+                            const rect = event.currentTarget.getBoundingClientRect();
+                            const position = event.clientY < rect.top + rect.height / 2 ? "before" : "after";
+                            setDropTarget((current) => current?.originalIndex === page.originalIndex && current.position === position
+                              ? current
+                              : { originalIndex: page.originalIndex, position });
+                          }
+                        }}
+                        onDrop={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          const sourceValue = event.dataTransfer.getData("text/plain");
+                          const rect = event.currentTarget.getBoundingClientRect();
+                          const dropPosition = event.clientY < rect.top + rect.height / 2 ? "before" : "after";
+                          if (/^\d+$/.test(sourceValue)) movePageTo(Number(sourceValue), page.originalIndex, dropPosition);
+                          setDraggedPageIndex(null);
+                          setDropTarget(null);
+                        }}
+                      >
+                        <div className="organize-page-topline">
+                          <label className="organize-page-select">
+                            <input type="checkbox" checked={selected.includes(page.originalIndex)} onChange={() => updateSelection(page.originalIndex)} aria-label={`Select page ${page.originalIndex + 1}`} />
+                            <span className="organize-page-position">Position {position + 1}</span>
+                          </label>
+                          <span
+                            className="organize-drag-handle"
+                            draggable={!exporting}
+                            title="Drag this handle to reorder the page"
+                            onDragStart={(event) => {
+                              event.dataTransfer.effectAllowed = "move";
+                              event.dataTransfer.setData("text/plain", String(page.originalIndex));
+                              setDraggedPageIndex(page.originalIndex);
+                            }}
+                            onDragEnd={() => {
+                              setDraggedPageIndex(null);
+                              setDropTarget(null);
+                            }}
+                          >
+                            <GripVertical size={15} aria-hidden="true" />
+                            <span>Drag</span>
+                          </span>
+                        </div>
                         <PagePreview document={pdf} pageNumber={page.originalIndex + 1} rotation={page.rotation} />
                         <span className="organize-page-name">Original page {page.originalIndex + 1}</span>
                       </article>
