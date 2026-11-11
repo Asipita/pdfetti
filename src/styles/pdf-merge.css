@@ -122,6 +122,7 @@
 }
 
 .merge-file-item {
+  position: relative;
   display: grid;
   grid-template-columns: 28px 20px 62px minmax(0, 1fr) auto;
   min-height: 88px;
@@ -156,6 +157,26 @@
 .merge-file-item.is-drop-target:hover {
   border-color: var(--primary);
   background: #fff7f8;
+}
+
+.merge-file-item.is-drop-before::before,
+.merge-file-item.is-drop-after::after {
+  position: absolute;
+  right: 8px;
+  left: 8px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--primary);
+  content: "";
+  pointer-events: none;
+}
+
+.merge-file-item.is-drop-before::before {
+  top: -6px;
+}
+
+.merge-file-item.is-drop-after::after {
+  bottom: -6px;
 }
 
 .merge-file-position {

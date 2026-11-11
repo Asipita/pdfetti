@@ -97,6 +97,7 @@ export function PdfMerger() {
   const [dragging, setDragging] = useState(false);
   const [draggedFileId, setDraggedFileId] = useState("");
   const [dragTargetId, setDragTargetId] = useState("");
+  const [dragTargetPosition, setDragTargetPosition] = useState<"before" | "after">("before");
   const [success, setSuccess] = useState(false);
 
   useEffect(() => () => {
@@ -157,7 +158,7 @@ export function PdfMerger() {
     setSuccess(false);
   };
 
-  const moveFileTo = (sourceId: string, targetId: string) => {
+  const moveFileTo = (sourceId: string, targetId: string, position: "before" | "after") => {
     if (loading || merging || sourceId === targetId) return;
     setFiles((current) => {
       const sourceIndex = current.findIndex((item) => item.id === sourceId);
@@ -165,7 +166,8 @@ export function PdfMerger() {
       if (sourceIndex < 0 || targetIndex < 0) return current;
       const next = [...current];
       const [moved] = next.splice(sourceIndex, 1);
-      next.splice(targetIndex, 0, moved);
+      const adjustedTarget = targetIndex - (sourceIndex < targetIndex ? 1 : 0);
+      next.splice(adjustedTarget + (position === "after" ? 1 : 0), 0, moved);
       return next;
     });
     setSuccess(false);
@@ -273,14 +275,14 @@ export function PdfMerger() {
                   </div>
 
                   <div className="merge-list-heading">
-                    <div><span className="separate-step">01</span><div><h2>Set the file order</h2><p>Drag files into order or use the up and down buttons. Each PDF’s pages stay together.</p></div></div>
+                    <div><span className="separate-step">01</span><div><h2>Set the file order</h2><p>Drag above or below a file, or use the up and down buttons. Each PDF’s pages stay together.</p></div></div>
                     <span className="merge-list-count">{files.length} files</span>
                   </div>
 
                   <ol className="merge-file-list" aria-label="PDF merge order">
                     {files.map((item, index) => (
                       <li
-                        className={`merge-file-item${draggedFileId === item.id ? " is-dragging" : ""}${dragTargetId === item.id ? " is-drop-target" : ""}`}
+                        className={`merge-file-item${draggedFileId === item.id ? " is-dragging" : ""}${dragTargetId === item.id ? ` is-drop-target is-drop-${dragTargetPosition}` : ""}`}
                         key={item.id}
                         draggable={!loading && !merging}
                         onDragStart={(event) => {
@@ -291,11 +293,17 @@ export function PdfMerger() {
                         onDragOver={(event) => {
                           event.preventDefault();
                           event.dataTransfer.dropEffect = "move";
-                          if (item.id !== draggedFileId) setDragTargetId(item.id);
+                          if (item.id !== draggedFileId) {
+                            setDragTargetId(item.id);
+                            const rect = event.currentTarget.getBoundingClientRect();
+                            setDragTargetPosition(event.clientY < rect.top + rect.height / 2 ? "before" : "after");
+                          }
                         }}
                         onDrop={(event) => {
                           event.preventDefault();
-                          moveFileTo(event.dataTransfer.getData("text/plain"), item.id);
+                          const rect = event.currentTarget.getBoundingClientRect();
+                          const position = event.clientY < rect.top + rect.height / 2 ? "before" : "after";
+                          moveFileTo(event.dataTransfer.getData("text/plain"), item.id, position);
                           setDraggedFileId("");
                           setDragTargetId("");
                         }}
