@@ -101,23 +101,230 @@
 }
 
 .home-hero-bottom {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 430px;
-  gap: 60px;
-  align-items: end;
+  display: block;
 }
 
-.home-hero-copy {
-  padding-bottom: 3px;
-}
-
-.home-hero-copy > p {
+.home-hero-lead {
   color: #d0c7c8;
-  max-width: 490px;
+  max-width: 620px;
   font-size: 19px;
   line-height: 1.6;
   letter-spacing: -0.018em;
+  margin: 0 0 28px;
+}
+
+.home-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.home-tool-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #5b484d;
+  border-radius: 11px;
+  background: #2b2427;
+  color: #faf7f6;
+  text-decoration: none;
+  transition: border-color 0.16s, background 0.16s, transform 0.16s;
+}
+
+.home-tool-card:hover {
+  transform: translateY(-3px);
+  border-color: #d58b92;
+  background: #31282b;
+}
+
+.home-tool-art {
+  position: relative;
+  display: flex;
+  height: 176px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #382f32;
+}
+
+.home-tool-art--annotation {
+  background: linear-gradient(125deg, #382f32, #413236);
+}
+
+.home-tool-art--separation {
+  background: linear-gradient(125deg, #352d30, #403235);
+}
+
+.home-art-paper {
+  position: relative;
+  display: flex;
+  width: 112px;
+  height: 140px;
+  flex-direction: column;
+  gap: 9px;
+  padding: 22px 15px 12px;
+  border-radius: 3px;
+  background: #fffdfb;
+  box-shadow: 0 12px 30px #160f1155;
+  transform: rotate(-3deg);
+}
+
+.home-art-line {
+  display: block;
+  width: 75%;
+  height: 3px;
+  border-radius: 3px;
+  background: #e6dddc;
+}
+
+.home-art-line--wide {
+  width: 100%;
+  margin-bottom: 4px;
+  background: #d3c4c4;
+}
+
+.home-art-line--short {
+  width: 53%;
+}
+
+.home-art-field {
+  display: flex;
+  height: 21px;
+  gap: 5px;
+  margin-top: 1px;
+  border-bottom: 1px solid #e9dfe0;
+}
+
+.home-art-field i {
+  width: 13px;
+  height: 11px;
+  border: 1px solid #dfcfd1;
+  border-radius: 2px;
+}
+
+.home-art-signature {
+  align-self: flex-end;
+  margin-top: auto;
+  color: #be3144;
+  font-family: Georgia, serif;
+  font-size: 10px;
+  font-style: italic;
+  transform: rotate(-6deg);
+}
+
+.home-art-note {
+  position: absolute;
+  right: calc(50% - 100px);
+  bottom: 29px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid #74565d;
+  border-radius: 6px;
+  background: #2a2225;
+  color: #f5e8e9;
+  font-size: 10px;
+  font-weight: 600;
+  box-shadow: 0 5px 15px #160f1140;
+}
+
+.home-art-note svg {
+  color: #ff8589;
+}
+
+.home-art-pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transform: rotate(-3deg);
+}
+
+.home-art-page {
+  display: flex;
+  width: 56px;
+  height: 78px;
+  flex: none;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 8px;
+  border: 1px solid #d9cdcd;
+  border-radius: 3px;
+  background: #fffdfb;
+  box-shadow: 0 8px 20px #160f1140;
+  opacity: 0.7;
+}
+
+.home-art-page:nth-child(2) {
+  transform: translateY(-10px);
+}
+
+.home-art-page:nth-child(3) {
+  transform: translateY(7px);
+}
+
+.home-art-page.is-picked {
+  border: 2px solid #ff777e;
+  opacity: 1;
+}
+
+.home-art-page i {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: #e8dfe0;
+}
+
+.home-art-page i:nth-child(2) {
+  width: 75%;
+}
+
+.home-art-page i:nth-child(3) {
+  width: 50%;
+}
+
+.home-tool-card-copy {
+  padding: 19px 21px 20px;
+}
+
+.home-tool-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #d1a6aa;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.home-tool-card-copy h2 {
+  margin: 13px 0 7px;
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+
+.home-tool-card-copy p {
+  max-width: 390px;
+  min-height: 44px;
   margin: 0;
+  color: #c9bfc1;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.home-tool-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 15px;
+  color: #ff989b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.home-tool-card:hover .home-tool-action {
+  color: #ffb1b3;
 }
 
 .home-hero-notes {
@@ -147,58 +354,6 @@
 
 .home-hero-notes a:hover {
   color: #ff8b8b;
-}
-
-.home .upload-area {
-  min-height: 239px;
-  border: 1px solid #796368;
-  border-radius: 10px;
-  background: #2e272a;
-  box-shadow: none;
-  color: #fff;
-  padding: 22px 26px 20px;
-  text-align: left;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.home .upload-area:hover,
-.home .upload-area--over {
-  border-color: #ff7777;
-  background: #382b2f;
-}
-
-.home .upload-icon {
-  display: none;
-}
-
-.home .upload-area strong {
-  font-size: 19px;
-}
-
-.home .upload-area p {
-  color: #b9abad;
-}
-
-.home .upload-area .ui-button {
-  margin-top: 20px;
-  background: #ff6b6b;
-  color: #211c1e;
-  height: 44px;
-  font-weight: 700;
-}
-
-.home .upload-area .ui-button:hover {
-  background: #ff8989;
-}
-
-.home .upload-area .upload-foot {
-  margin-top: 15px;
-  color: #b9abad;
-}
-
-.home .upload-area .error-text {
-  color: #ffb0b0 !important;
 }
 
 .home-product {
@@ -599,9 +754,8 @@
     padding-bottom: 72px;
   }
 
-  .home-hero-bottom {
-    gap: 35px;
-    grid-template-columns: minmax(0, 1fr) 360px;
+  .home-tool-grid {
+    gap: 13px;
   }
 
   .home-product-frame {
@@ -646,22 +800,65 @@
     margin: 26px 0 30px;
   }
 
-  .home-hero-bottom {
-    display: block;
+  .home-hero-lead {
+    font-size: 16px;
+    margin-bottom: 22px;
   }
 
-  .home-hero-copy > p {
-    font-size: 17px;
-    max-width: 530px;
+  .home-tool-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .home-tool-card {
+    display: grid;
+    grid-template-columns: 36% minmax(0, 1fr);
+    min-height: 164px;
+  }
+
+  .home-tool-art {
+    height: 100%;
+    min-height: 164px;
+  }
+
+  .home-art-paper {
+    transform: scale(0.78) rotate(-3deg);
+  }
+
+  .home-art-pages {
+    gap: 4px;
+    transform: scale(0.78) rotate(-3deg);
+  }
+
+  .home-art-note {
+    right: 4px;
+    bottom: 9px;
+    padding: 6px;
+    font-size: 8px;
   }
 
   .home-hero-notes {
-    margin-top: 21px;
+    margin-top: 24px;
   }
 
-  .home .upload-area {
-    margin-top: 38px;
-    width: 100%;
+  .home-tool-card-copy {
+    align-self: center;
+    padding: 15px 13px;
+  }
+
+  .home-tool-card-copy h2 {
+    margin-top: 9px;
+    font-size: 19px;
+  }
+
+  .home-tool-card-copy p {
+    min-height: 0;
+    font-size: 12px;
+  }
+
+  .home-tool-action {
+    margin-top: 10px;
+    font-size: 11px;
   }
 
   .home-product {
