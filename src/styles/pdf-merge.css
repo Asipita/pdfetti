@@ -2,16 +2,16 @@
   width: min(100%, 1080px);
   margin: 0 auto;
   overflow: hidden;
-  border: 1px solid #ebe2e4;
-  border-radius: 15px;
+  border: 1px solid #e4e5e9;
+  border-radius: 12px;
   background: #fff;
-  box-shadow: 0 25px 75px rgba(39, 31, 34, 0.1), 0 2px 8px rgba(39, 31, 34, 0.04);
+  box-shadow: 0 14px 40px rgba(29, 31, 38, 0.07), 0 2px 6px rgba(29, 31, 38, 0.03);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .merge-tool.is-dragging {
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(190, 49, 68, 0.1), 0 25px 75px rgba(39, 31, 34, 0.1);
+  box-shadow: 0 0 0 3px rgba(190, 49, 68, 0.08), 0 14px 40px rgba(29, 31, 38, 0.07);
 }
 
 .merge-workspace {
@@ -58,7 +58,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 14px 24px;
-  border-bottom: 1px solid #eee8e9;
+  border-bottom: 1px solid #e6e7eb;
   background: #fff;
 }
 
@@ -85,7 +85,7 @@
 .merge-list-heading h2,
 .merge-export h2 {
   margin: 1px 0 5px;
-  color: #302629;
+  color: #25262b;
   font-size: 16px;
   font-weight: 650;
   letter-spacing: -0.025em;
@@ -94,7 +94,7 @@
 .merge-list-heading p,
 .merge-export p {
   margin: 0;
-  color: #817579;
+  color: #6e7078;
   font-size: 12px;
   line-height: 1.5;
 }
@@ -102,8 +102,8 @@
 .merge-list-count {
   padding: 7px 10px;
   border-radius: 20px;
-  background: #f8f5f5;
-  color: #62575b;
+  background: #f1f2f4;
+  color: #5f626b;
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
@@ -129,7 +129,7 @@
   align-items: center;
   gap: 14px;
   padding: 10px;
-  border: 1px solid #eee7e8;
+  border: 1px solid #e5e6ea;
   border-radius: 9px;
   background: #fff;
   transition: border-color 0.12s, background 0.12s;
@@ -141,18 +141,18 @@
 
 .merge-file-item.is-drop-target {
   border-color: var(--primary);
-  background: #fff7f8;
-  box-shadow: 0 0 0 2px rgba(190, 49, 68, 0.12);
+  background: #f6f7f9;
+  box-shadow: 0 0 0 2px rgba(190, 49, 68, 0.1);
 }
 
 .merge-file-item:hover {
-  border-color: #dfcdd1;
-  background: #fffdfd;
+  border-color: #d7d9df;
+  background: #fbfcfd;
 }
 
 .merge-file-item.is-drop-target:hover {
   border-color: var(--primary);
-  background: #fff7f8;
+  background: #f6f7f9;
 }
 
 .merge-file-item.is-drop-before::before,
@@ -181,7 +181,7 @@
   height: 26px;
   place-items: center;
   border-radius: 8px;
-  background: #fff0f2;
+  background: #f1f2f4;
   color: var(--primary);
   font-size: 11px;
   font-weight: 700;
@@ -196,7 +196,7 @@
   border: 1px solid transparent;
   border-radius: 6px;
   background: transparent;
-  color: #a99da0;
+  color: #9a9ca4;
   user-select: none;
 }
 
@@ -205,8 +205,8 @@
 }
 
 .merge-drag-handle[draggable="true"]:hover {
-  border-color: #eee2e5;
-  background: #f8f2f3;
+  border-color: #e4e5e9;
+  background: #f5f6f8;
   color: var(--primary);
 }
 
@@ -223,7 +223,7 @@
   justify-content: center;
   overflow: hidden;
   border-radius: 4px;
-  background: #f5f3f3;
+  background: #f1f2f4;
 }
 
 .merge-file-preview canvas {
@@ -239,7 +239,7 @@
   display: block;
   width: 42px;
   height: 55px;
-  background: repeating-linear-gradient(0deg, #fff 0 7px, #f0eded 7px 8px);
+  background: repeating-linear-gradient(0deg, #fff 0 7px, #eceef1 7px 8px);
   box-shadow: 0 1px 4px #271f221c;
 }
 
@@ -258,7 +258,7 @@
 
 .merge-file-details strong {
   overflow: hidden;
-  color: #382e31;
+  color: #25262b;
   font-size: 13px;
   font-weight: 600;
   text-overflow: ellipsis;
@@ -266,7 +266,7 @@
 }
 
 .merge-file-details span {
-  color: #8c8084;
+  color: #6e7078;
   font-size: 11px;
 }
 
@@ -284,11 +284,11 @@
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: #665b5f;
+  color: #5f626b;
 }
 
 .merge-icon-button:hover:not(:disabled) {
-  background: #f6f0f1;
+  background: #f1f2f4;
   color: var(--primary);
 }
 
@@ -330,8 +330,8 @@
   justify-content: space-between;
   gap: 16px;
   padding: 20px 24px;
-  border-top: 1px solid #eee8e9;
-  background: #fdfbfb;
+  border-top: 1px solid #e6e7eb;
+  background: #f8f9fb;
 }
 
 .merge-export > div {
@@ -354,7 +354,7 @@
 .merge-loading-message {
   margin: 0;
   padding: 0 24px 16px;
-  color: #74666b;
+  color: #6e7078;
   font-size: 12px;
 }
 

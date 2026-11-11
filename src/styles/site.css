@@ -42,8 +42,8 @@
   transform: rotate(7deg);
 }
 .marketing-nav {
-  height: 88px;
-  border-bottom: 1px solid rgba(39, 31, 34, 0.06);
+  height: 72px;
+  border-bottom: 1px solid var(--border);
   background: var(--background);
 }
 .nav-inner {
@@ -141,7 +141,7 @@
 .upload-area {
   position: relative;
   min-height: 335px;
-  border: 1.5px dashed #d9bfc4;
+  border: 1.5px dashed #d8dbe1;
   background: #fff;
   border-radius: 12px;
   display: flex;
@@ -153,7 +153,7 @@
   transition:
     background 0.15s,
     border-color 0.15s;
-  box-shadow: 0 18px 50px rgba(68, 35, 42, 0.045);
+  box-shadow: 0 12px 32px rgba(29, 31, 38, 0.045);
 }
 .upload-area--over {
   background: var(--secondary);
@@ -365,7 +365,7 @@
 .preview-tools {
   height: 39px;
   background: #fff;
-  border-bottom: 1px solid #ece7e8;
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -380,7 +380,7 @@
   margin-right: 20px;
 }
 .preview-tool-active {
-  background: #fff0f2;
+  background: #f8e9ec;
   color: var(--primary);
   border-radius: 4px;
   font-weight: 700;
