@@ -93,7 +93,7 @@
 
 .home-tool-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -694,6 +694,7 @@
   }
 
   .home-tool-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 13px;
   }
 
@@ -761,7 +762,7 @@
 
   .home-art-pages {
     gap: 4px;
-    transform: scale(0.78) rotate(-3deg);
+    transform: scale(0.48) rotate(-3deg);
   }
 
   .home-art-note {

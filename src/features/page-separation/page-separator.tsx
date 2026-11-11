@@ -306,7 +306,7 @@ export function PageSeparator() {
           </div>
         </section>
       </main>
-      <footer className="site-footer"><div className="container footer-inner"><Brand /><span>PDF tools that keep things simple.</span><nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/editor/">PDF editor</a><a href="https://github.com/asipita/pdfetti" target="_blank" rel="noopener noreferrer">GitHub</a></nav></div></footer>
+      <footer className="site-footer"><div className="container footer-inner"><Brand /><span>PDF tools that keep things simple.</span><nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/editor/">PDF editor</a><a href="/organize-pdf/">Organize pages</a><a href="https://github.com/asipita/pdfetti" target="_blank" rel="noopener noreferrer">GitHub</a></nav></div></footer>
     </div>
   );
 }

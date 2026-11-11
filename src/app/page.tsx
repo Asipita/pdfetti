@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
+  ArrowUpDown,
   FilePenLine,
   LockKeyhole,
   Scissors,
@@ -40,7 +41,7 @@ export default function Home() {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description:
-      "Free browser-based PDF tools for annotating documents, adding signatures, and extracting selected pages.",
+      "Free browser-based PDF tools for annotating documents, extracting pages, and organizing page order.",
   };
 
   return (
@@ -101,6 +102,21 @@ export default function Home() {
                   <span className="home-tool-title">Page extraction</span>
                   <p>Keep the pages you need in a new PDF.</p>
                   <span className="home-tool-action">Separate pages <ArrowUpRight size={16} aria-hidden="true" /></span>
+                </div>
+              </Link>
+              <Link href="/organize-pdf/" className="home-tool-card home-tool-card--organization">
+                <div className="home-tool-art home-tool-art--organization" aria-hidden="true">
+                  <div className="home-art-pages">
+                    <span className="home-art-page"><i /><i /><i /></span>
+                    <span className="home-art-page"><i /><i /><i /></span>
+                    <span className="home-art-page is-picked"><i /><i /><i /></span>
+                  </div>
+                  <span className="home-art-note"><ArrowUpDown size={14} /> Reorder pages</span>
+                </div>
+                <div className="home-tool-card-copy">
+                  <span className="home-tool-title">Organize pages</span>
+                  <p>Reorder, rotate, or remove pages.</p>
+                  <span className="home-tool-action">Organize PDF <ArrowUpRight size={16} aria-hidden="true" /></span>
                 </div>
               </Link>
             </div>
