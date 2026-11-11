@@ -4,7 +4,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   FilePenLine,
-  Files,
   LockKeyhole,
   Scissors,
 } from "lucide-react";
@@ -41,7 +40,7 @@ export default function Home() {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description:
-      "Free browser-based PDF editor for filling forms, adding text and signatures, and downloading completed PDFs.",
+      "Free browser-based PDF tools for annotating documents, adding signatures, and extracting selected pages.",
   };
 
   return (
@@ -70,65 +69,44 @@ export default function Home() {
 
         <main>
           <section className="home-hero container" aria-labelledby="home-title">
-            <div className="home-eyebrow">
-              <span className="home-eyebrow-mark" aria-hidden="true" />
-              PDF TOOLS THAT KEEP THINGS SIMPLE
+            <div className="home-tool-grid" role="group" aria-label="PDFetti tools">
+              <Link href="/editor/" className="home-tool-card home-tool-card--annotation">
+                <div className="home-tool-art home-tool-art--annotation" aria-hidden="true">
+                  <div className="home-art-paper">
+                    <span className="home-art-line home-art-line--wide" />
+                    <span className="home-art-line" />
+                    <span className="home-art-line home-art-line--short" />
+                    <span className="home-art-field"><i /> <i /></span>
+                    <span className="home-art-signature">Alex Morgan</span>
+                  </div>
+                  <span className="home-art-note"><FilePenLine size={14} /> Add your mark</span>
+                </div>
+                <div className="home-tool-card-copy">
+                  <span className="home-tool-title">Annotation</span>
+                  <p>Fill forms, add text, and sign.</p>
+                  <span className="home-tool-action">Open the editor <ArrowUpRight size={16} aria-hidden="true" /></span>
+                </div>
+              </Link>
+              <Link href="/extract-pdf-pages/" className="home-tool-card home-tool-card--separation">
+                <div className="home-tool-art home-tool-art--separation" aria-hidden="true">
+                  <div className="home-art-pages">
+                    <span className="home-art-page"><i /><i /><i /></span>
+                    <span className="home-art-page is-picked"><i /><i /><i /></span>
+                    <span className="home-art-page"><i /><i /><i /></span>
+                    <span className="home-art-page is-picked"><i /><i /><i /></span>
+                  </div>
+                  <span className="home-art-note"><Scissors size={14} /> Keep just these</span>
+                </div>
+                <div className="home-tool-card-copy">
+                  <span className="home-tool-title">Page extraction</span>
+                  <p>Keep the pages you need in a new PDF.</p>
+                  <span className="home-tool-action">Separate pages <ArrowUpRight size={16} aria-hidden="true" /></span>
+                </div>
+              </Link>
             </div>
-            <h1 id="home-title">
-              Your PDF,
-              <br />
-              finished<span>.</span>
-            </h1>
-            <div className="home-hero-bottom">
-              <p className="home-hero-lead">
-                Choose the PDF task you came to do. Your files stay in your browser,
-                and each tool gets its own simple workspace.
-              </p>
-              <div className="home-tool-grid" aria-label="PDFetti features">
-                <Link href="/editor/" className="home-tool-card home-tool-card--annotation">
-                  <div className="home-tool-art home-tool-art--annotation" aria-hidden="true">
-                    <div className="home-art-paper">
-                      <span className="home-art-line home-art-line--wide" />
-                      <span className="home-art-line" />
-                      <span className="home-art-line home-art-line--short" />
-                      <span className="home-art-field"><i /> <i /></span>
-                      <span className="home-art-signature">Alex Morgan</span>
-                    </div>
-                    <span className="home-art-note"><FilePenLine size={14} /> Add your mark</span>
-                  </div>
-                  <div className="home-tool-card-copy">
-                    <div className="home-tool-label"><FilePenLine size={15} /> ANNOTATION</div>
-                    <h2>Annotate a PDF</h2>
-                    <p>Fill forms, add text, and sign your document.</p>
-                    <span className="home-tool-action">Open the editor <ArrowUpRight size={16} aria-hidden="true" /></span>
-                  </div>
-                </Link>
-                <Link href="/extract-pdf-pages/" className="home-tool-card home-tool-card--separation">
-                  <div className="home-tool-art home-tool-art--separation" aria-hidden="true">
-                    <div className="home-art-pages">
-                      <span className="home-art-page"><i /><i /><i /></span>
-                      <span className="home-art-page is-picked"><i /><i /><i /></span>
-                      <span className="home-art-page"><i /><i /><i /></span>
-                      <span className="home-art-page is-picked"><i /><i /><i /></span>
-                    </div>
-                    <span className="home-art-note"><Scissors size={14} /> Keep just these</span>
-                  </div>
-                  <div className="home-tool-card-copy">
-                    <div className="home-tool-label"><Files size={15} /> PAGE EXTRACTION</div>
-                    <h2>Extract PDF pages</h2>
-                    <p>Choose the pages you need and save them as a new PDF.</p>
-                    <span className="home-tool-action">Separate pages <ArrowUpRight size={16} aria-hidden="true" /></span>
-                  </div>
-                </Link>
-              </div>
-              <div className="home-hero-notes">
-                <span>Free to use</span>
-                <span>Works in your browser</span>
-                <span>No account needed</span>
-                <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">
-                  Open source on GitHub <ArrowUpRight size={12} aria-hidden="true" />
-                </a>
-              </div>
+            <div className="home-hero-heading">
+              <h1 id="home-title">Your PDF, finished<span>.</span></h1>
+              <p>Free, private tools for working with PDFs.</p>
             </div>
           </section>
 
