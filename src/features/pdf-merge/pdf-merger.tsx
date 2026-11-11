@@ -284,12 +284,6 @@ export function PdfMerger() {
                       <li
                         className={`merge-file-item${draggedFileId === item.id ? " is-dragging" : ""}${dragTargetId === item.id ? ` is-drop-target is-drop-${dragTargetPosition}` : ""}`}
                         key={item.id}
-                        draggable={!loading && !merging}
-                        onDragStart={(event) => {
-                          event.dataTransfer.effectAllowed = "move";
-                          event.dataTransfer.setData("text/plain", item.id);
-                          setDraggedFileId(item.id);
-                        }}
                         onDragOver={(event) => {
                           event.preventDefault();
                           event.dataTransfer.dropEffect = "move";
@@ -307,13 +301,25 @@ export function PdfMerger() {
                           setDraggedFileId("");
                           setDragTargetId("");
                         }}
-                        onDragEnd={() => {
-                          setDraggedFileId("");
-                          setDragTargetId("");
-                        }}
                       >
                         <span className="merge-file-position" aria-label={`File ${index + 1}`}>{index + 1}</span>
-                        <span className="merge-drag-handle" aria-hidden="true" title="Drag to reorder"><GripVertical size={17} /></span>
+                        <span
+                          className="merge-drag-handle"
+                          draggable={!loading && !merging}
+                          title="Drag this handle to reorder"
+                          onDragStart={(event) => {
+                            event.dataTransfer.effectAllowed = "move";
+                            event.dataTransfer.setData("text/plain", item.id);
+                            setDraggedFileId(item.id);
+                          }}
+                          onDragEnd={() => {
+                            setDraggedFileId("");
+                            setDragTargetId("");
+                          }}
+                        >
+                          <GripVertical size={17} aria-hidden="true" />
+                          <span>Drag</span>
+                        </span>
                         <FirstPagePreview document={item.preview} />
                         <div className="merge-file-details">
                           <strong title={item.file.name}>{item.file.name}</strong>

@@ -124,7 +124,7 @@
 .merge-file-item {
   position: relative;
   display: grid;
-  grid-template-columns: 28px 20px 62px minmax(0, 1fr) auto;
+  grid-template-columns: 28px 62px 62px minmax(0, 1fr) auto;
   min-height: 88px;
   align-items: center;
   gap: 14px;
@@ -133,10 +133,6 @@
   border-radius: 9px;
   background: #fff;
   transition: border-color 0.12s, background 0.12s;
-}
-
-.merge-file-item[draggable="true"] {
-  cursor: grab;
 }
 
 .merge-file-item.is-dragging {
@@ -193,13 +189,34 @@
 }
 
 .merge-drag-handle {
-  display: grid;
-  place-items: center;
-  color: #a39699;
+  display: inline-flex;
+  width: max-content;
+  min-width: 58px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 5px 0 2px;
+  border: 1px solid #e7dfe1;
+  border-radius: 6px;
+  background: #f8f5f5;
+  color: #62575b;
+  font-size: 10px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.merge-drag-handle[draggable="true"] {
   cursor: grab;
 }
 
-.merge-file-item[draggable="true"]:active .merge-drag-handle {
+.merge-drag-handle[draggable="true"]:hover {
+  border-color: #d5b7bd;
+  background: #fff1f3;
+  color: var(--primary);
+}
+
+.merge-drag-handle[draggable="true"]:active {
   cursor: grabbing;
 }
 
@@ -395,7 +412,7 @@
   }
 
   .merge-file-item {
-    grid-template-columns: 24px 17px 48px minmax(0, 1fr) auto;
+    grid-template-columns: 24px 50px 48px minmax(0, 1fr) auto;
     gap: 8px;
     padding: 7px;
   }
@@ -407,6 +424,12 @@
 
   .merge-file-preview canvas {
     max-height: 58px;
+  }
+
+  .merge-drag-handle {
+    min-width: 47px;
+    padding-right: 3px;
+    font-size: 9px;
   }
 
   .merge-item-actions {
