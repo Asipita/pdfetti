@@ -51,6 +51,7 @@ export default function Home() {
             <nav aria-label="Main navigation">
               <a href="#features">Features</a>
               <a href="#privacy">Privacy</a>
+              <Link href="/extract-pdf-pages/">Extract pages</Link>
               <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
@@ -160,6 +161,19 @@ export default function Home() {
             </div>
           </section>
 
+          <section className="home-separate-tool" aria-labelledby="home-separate-title">
+            <div className="container home-separate-tool-inner">
+              <div>
+                <span className="home-kicker">A SEPARATE PDF TOOL</span>
+                <h2 id="home-separate-title">Only need a few pages?</h2>
+                <p>Pick the pages you want and save them as a new PDF. It’s a focused tool of its own, separate from the PDF editor.</p>
+              </div>
+              <Link href="/extract-pdf-pages/" className="home-separate-tool-link">
+                Extract pages from a PDF <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </div>
+          </section>
+
           <section className="home-privacy" id="privacy">
             <div className="container home-privacy-grid">
               <div className="home-privacy-art" aria-hidden="true">
@@ -219,6 +233,7 @@ export default function Home() {
           <nav aria-label="Footer">
             <Link href="/privacy/">Privacy</Link>
             <Link href="/editor/">Editor</Link>
+            <Link href="/extract-pdf-pages/">Extract pages</Link>
             <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
           </nav>
         </div>
