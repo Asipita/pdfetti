@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -11,6 +12,10 @@ import {
 } from "lucide-react";
 import { HomeNav } from "@/components/home/home-nav";
 import { HomeFooter } from "@/components/home/home-footer";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const features = [
   {
@@ -40,7 +45,7 @@ export default function Home() {
     "@type": "WebApplication",
     name: "PDFetti",
     sameAs: repositoryUrl,
-    applicationCategory: "BusinessApplication",
+    applicationCategory: "UtilitiesApplication",
     operatingSystem: "Web",
     description:
       "Free browser-based PDF tools for annotating, extracting pages, organizing, and merging PDFs.",

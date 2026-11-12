@@ -27,7 +27,6 @@ export const metadata: Metadata = {
   },
   description:
     "Annotate, extract pages, organize, and merge PDFs with free, private tools that run in your browser.",
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "PDFetti",

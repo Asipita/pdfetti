@@ -6,7 +6,7 @@ const description =
   "Merge PDF files online for free. Add PDFs, arrange their order, and download one combined document. Private, browser-based, and easy to use.";
 
 export const metadata: Metadata = {
-  title: "Merge PDF Files Online for Free | PDFetti",
+  title: "Merge PDF Files Online for Free",
   description,
   alternates: { canonical: pageUrl },
   openGraph: {
@@ -14,8 +14,21 @@ export const metadata: Metadata = {
     title: "Merge PDF Files Online for Free | PDFetti",
     description,
     url: pageUrl,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "PDFetti free PDF tools",
+      },
+    ],
   },
-  twitter: { card: "summary", title: "Merge PDF Files | PDFetti", description },
+  twitter: {
+    card: "summary_large_image",
+    title: "Merge PDF Files | PDFetti",
+    description,
+    images: ["/og.png"],
+  },
 };
 
 export default function MergePdfPage() {

@@ -6,7 +6,7 @@ const description =
   "Extract pages from a PDF online for free. Select pages visually or enter page ranges, then download a new PDF. Private, browser-based, and easy to use.";
 
 export const metadata: Metadata = {
-  title: "Extract Pages from PDF for Free | PDFetti",
+  title: "Extract Pages from PDF for Free",
   description,
   alternates: { canonical: pageUrl },
   openGraph: {
@@ -14,8 +14,21 @@ export const metadata: Metadata = {
     title: "Extract Pages from PDF for Free | PDFetti",
     description,
     url: pageUrl,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "PDFetti free PDF tools",
+      },
+    ],
   },
-  twitter: { card: "summary", title: "Extract Pages from PDF | PDFetti", description },
+  twitter: {
+    card: "summary_large_image",
+    title: "Extract Pages from PDF | PDFetti",
+    description,
+    images: ["/og.png"],
+  },
 };
 
 export default function ExtractPdfPagesPage() {

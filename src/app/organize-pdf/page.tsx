@@ -6,7 +6,7 @@ const description =
   "Organize PDF pages online for free. Reorder, rotate, or remove pages, then download a new PDF. Private, browser-based, and easy to use.";
 
 export const metadata: Metadata = {
-  title: "Organize PDF Pages Online for Free | PDFetti",
+  title: "Organize PDF Pages Online for Free",
   description,
   alternates: { canonical: pageUrl },
   openGraph: {
@@ -14,8 +14,21 @@ export const metadata: Metadata = {
     title: "Organize PDF Pages Online for Free | PDFetti",
     description,
     url: pageUrl,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "PDFetti free PDF tools",
+      },
+    ],
   },
-  twitter: { card: "summary", title: "Organize PDF Pages | PDFetti", description },
+  twitter: {
+    card: "summary_large_image",
+    title: "Organize PDF Pages | PDFetti",
+    description,
+    images: ["/og.png"],
+  },
 };
 
 export default function OrganizePdfPage() {
