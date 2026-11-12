@@ -25,27 +25,29 @@ export const metadata: Metadata = {
     template: "%s | PDFetti",
   },
   description:
-    "Fill forms, add text and signatures, and download your PDF. Free, private, and entirely in your browser.",
+    "Annotate, extract pages, organize, and merge PDFs with free, private tools that run in your browser.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "PDFetti",
     title: "PDFetti — PDFs without the fuss",
-    description: "Fill it. Sign it. Download it. No catches.",
+    description:
+      "Annotate, extract pages, organize, and merge PDFs in your browser. Free, private, and no account needed.",
     url: "/",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "PDFetti — PDFs without the fuss",
+        alt: "PDFetti PDF tools: annotation, page extraction, page organization, and PDF merging",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "PDFetti — PDFs without the fuss",
-    description: "Fill it. Sign it. Download it. No catches.",
+    description:
+      "Annotate, extract pages, organize, and merge PDFs in your browser. Free, private, and no account needed.",
     images: ["/og.png"],
   },
   robots: { index: true, follow: true },

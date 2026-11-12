@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#302a31"/>
+      <stop offset=".55" stop-color="#24252b"/>
+      <stop offset="1" stop-color="#202127"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(-507 300 -209 -353 1105 36)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#713f4d" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#713f4d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0v36" stroke="#fff" stroke-opacity=".025"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#111116" flood-opacity=".18"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <g transform="translate(72 53)">
+      <g transform="rotate(-7 26 26)">
+        <rect width="52" height="52" rx="12" fill="#be3144"/>
+        <path d="M17 15v17.5c0 5.1 4 8.5 9 8.5s9-3.4 9-8.5V15" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M39 13v8h-8" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <text x="68" y="38" fill="#f7f4f6" font-size="32" font-weight="700" letter-spacing="-1.4">PDFetti</text>
+    </g>
+    <g transform="translate(843 70)">
+      <circle cx="5" cy="5" r="5" fill="#f0808b"/>
+      <text x="22" y="10" fill="#c9c2cb" font-size="13" font-weight="600" letter-spacing="1.5">FREE · PRIVATE · IN YOUR BROWSER</text>
+    </g>
+
+    <path d="M73 162v287" stroke="#f0808b" stroke-opacity=".8" stroke-width="3"/>
+    <text x="103" y="232" fill="#f7f5f6" font-size="68" font-weight="650" letter-spacing="-4.5">Your PDF,</text>
+    <text x="103" y="310" fill="#f7f5f6" font-size="68" font-weight="650" letter-spacing="-4.5">finished<tspan fill="#f0808b">.</tspan></text>
+    <text x="104" y="369" fill="#c6c1c9" font-size="21" font-weight="400">Annotate, extract, organize, and merge PDFs.</text>
+    <text x="104" y="400" fill="#c6c1c9" font-size="21" font-weight="400">Free tools that run in your browser.</text>
+
+    <g transform="translate(104 469)">
+      <rect width="178" height="36" rx="18" fill="#fff" fill-opacity=".065" stroke="#fff" stroke-opacity=".12"/>
+      <path d="m17 18 4 4 8-9" stroke="#f0808b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="40" y="23" fill="#e4dfe6" font-size="13" font-weight="600" letter-spacing=".5">NO ACCOUNT NEEDED</text>
+      <rect x="190" width="224" height="36" rx="18" fill="#fff" fill-opacity=".065" stroke="#fff" stroke-opacity=".12"/>
+      <path d="M207 14v-2a5 5 0 0 1 10 0v2m-12 0h14v11h-14z" stroke="#f0808b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="230" y="23" fill="#e4dfe6" font-size="13" font-weight="600" letter-spacing=".3">FILES STAY ON YOUR DEVICE</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <g transform="translate(646 155)">
+        <rect width="226" height="150" rx="14" fill="#302f36" stroke="#fff" stroke-opacity=".13"/>
+        <rect x="18" y="18" width="42" height="42" rx="11" fill="#50363f"/>
+        <path d="M31 28h13a3 3 0 0 1 3 3v17H31a3 3 0 0 1-3-3V31a3 3 0 0 1 3-3Zm3 7h8m-8 5h5m-4 10 8-8 4 4-8 8-5 1z" stroke="#f0808b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="18" y="92" fill="#f5f2f5" font-size="19" font-weight="650" letter-spacing="-.5">Annotate</text>
+        <text x="18" y="119" fill="#bdb8c1" font-size="13" font-weight="400">Fill forms, add text, and sign</text>
+      </g>
+      <g transform="translate(890 155)">
+        <rect width="226" height="150" rx="14" fill="#302f36" stroke="#fff" stroke-opacity=".13"/>
+        <rect x="18" y="18" width="42" height="42" rx="11" fill="#50363f"/>
+        <path d="M28 28h11l5 5v17H28zM39 28v6h5m-3 5h5v13H33m-5-4h9" stroke="#f0808b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="m48 43 4 4 4-4m-4-7v11" stroke="#f0808b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="18" y="92" fill="#f5f2f5" font-size="19" font-weight="650" letter-spacing="-.5">Extract pages</text>
+        <text x="18" y="119" fill="#bdb8c1" font-size="13" font-weight="400">Keep only the pages you need</text>
+      </g>
+      <g transform="translate(646 323)">
+        <rect width="226" height="150" rx="14" fill="#302f36" stroke="#fff" stroke-opacity=".13"/>
+        <rect x="18" y="18" width="42" height="42" rx="11" fill="#50363f"/>
+        <path d="M29 30h3m-3 7h3m-3 7h3m-3 7h3m6-21h12v5H35zm0 7h12v5H35zm0 7h12v5H35z" stroke="#f0808b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="18" y="92" fill="#f5f2f5" font-size="19" font-weight="650" letter-spacing="-.5">Organize pages</text>
+        <text x="18" y="119" fill="#bdb8c1" font-size="13" font-weight="400">Reorder, rotate, or remove</text>
+      </g>
+      <g transform="translate(890 323)">
+        <rect width="226" height="150" rx="14" fill="#302f36" stroke="#fff" stroke-opacity=".13"/>
+        <rect x="18" y="18" width="42" height="42" rx="11" fill="#50363f"/>
+        <path d="M28 30h11l4 4v16H28zm12 0v5h4m2 4h8v12h-8zm4-3v-6h8v9" stroke="#f0808b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M48 43h8m-4-4v8" stroke="#f0808b" stroke-width="1.8" stroke-linecap="round"/>
+        <text x="18" y="92" fill="#f5f2f5" font-size="19" font-weight="650" letter-spacing="-.5">Merge PDFs</text>
+        <text x="18" y="119" fill="#bdb8c1" font-size="13" font-weight="400">Combine files in your order</text>
+      </g>
+    </g>
+  </g>
+</svg>
