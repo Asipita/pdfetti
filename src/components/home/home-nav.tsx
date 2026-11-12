@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Brand } from "@/components/shared/brand";
@@ -10,23 +10,39 @@ type HomeNavProps = {
 };
 
 export function HomeNav({ repositoryUrl }: HomeNavProps) {
+  const navRef = useRef<HTMLElement | null>(null);
   const [overHero, setOverHero] = useState(true);
 
   useEffect(() => {
     const hero = document.getElementById("home-hero");
     if (!hero) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setOverHero(entry.isIntersecting),
-      { rootMargin: "-72px 0px 0px 0px" },
-    );
+    let frame = 0;
+    const updateBackground = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const navHeight = navRef.current?.getBoundingClientRect().height ?? 72;
+        const nextOverHero = hero.getBoundingClientRect().bottom > navHeight;
+        setOverHero((current) => (current === nextOverHero ? current : nextOverHero));
+      });
+    };
 
-    observer.observe(hero);
-    return () => observer.disconnect();
+    updateBackground();
+    window.addEventListener("scroll", updateBackground, { passive: true });
+    window.addEventListener("resize", updateBackground);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateBackground);
+      window.removeEventListener("resize", updateBackground);
+    };
   }, []);
 
   return (
-    <header className={`home-nav${overHero ? "" : " is-scrolled"}`}>
+    <header
+      className={`home-nav${overHero ? "" : " is-scrolled"}`}
+      ref={navRef}
+    >
       <div className="container home-nav-inner">
         <Brand />
         <nav aria-label="Main navigation">

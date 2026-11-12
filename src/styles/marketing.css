@@ -19,7 +19,7 @@
   z-index: 20;
   height: 72px;
   color: #f4f3f5;
-  background: rgba(41, 39, 46, 0.96);
+  background-color: rgba(41, 39, 46, 0.96);
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   backdrop-filter: blur(14px);
   transition:
@@ -32,7 +32,7 @@
 .home-nav.is-scrolled {
   --primary: #be3144;
   color: #25262b;
-  background: rgba(241, 242, 244, 0.94);
+  background-color: rgba(241, 242, 244, 0.96);
   border-bottom-color: #dfe0e5;
   box-shadow: 0 5px 18px rgba(31, 33, 40, 0.07);
 }
