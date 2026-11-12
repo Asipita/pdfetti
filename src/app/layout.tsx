@@ -17,7 +17,8 @@ const inter = localFont({
   display: "swap",
   variable: "--font-inter",
 });
-const site = process.env.NEXT_PUBLIC_SITE_URL || "https://pdfetti.example";
+const site = process.env.NEXT_PUBLIC_SITE_URL || "https://pdfetti.vercel.app";
+const ogImage = new URL("/og.png", site).toString();
 export const metadata: Metadata = {
   metadataBase: new URL(site),
   title: {
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     url: "/",
     images: [
       {
-        url: "/og.png",
+        url: ogImage,
         width: 1200,
         height: 630,
         alt: "PDFetti PDF tools: annotation, page extraction, page organization, and PDF merging",
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     title: "PDFetti — PDFs without the fuss",
     description:
       "Annotate, extract pages, organize, and merge PDFs in your browser. Free, private, and no account needed.",
-    images: ["/og.png"],
+    images: [ogImage],
   },
   robots: { index: true, follow: true },
 };

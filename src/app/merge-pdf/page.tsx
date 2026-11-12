@@ -26,7 +26,7 @@ export default function MergePdfPage() {
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Web",
     description,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://pdfetti.example"}${pageUrl}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://pdfetti.vercel.app"}${pageUrl}`,
     isPartOf: { "@type": "WebSite", name: "PDFetti" },
   };
 
