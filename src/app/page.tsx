@@ -9,7 +9,8 @@ import {
   Plus,
   Scissors,
 } from "lucide-react";
-import { Brand } from "@/components/shared/brand";
+import { HomeNav } from "@/components/home/home-nav";
+import { HomeFooter } from "@/components/home/home-footer";
 
 const features = [
   {
@@ -51,25 +52,15 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <header className="home-nav">
-        <div className="container home-nav-inner">
-          <Brand />
-          <nav aria-label="Main navigation">
-            <a href="#features">Features</a>
-            <Link href="/extract-pdf-pages/">Extract pages</Link>
-            <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-            <Link href="/editor/" className="home-nav-action">
-              Open editor <ArrowUpRight size={15} aria-hidden="true" />
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <HomeNav repositoryUrl={repositoryUrl} />
 
       <main>
         <div className="home-opening">
-          <section className="home-hero container" aria-labelledby="home-title">
+          <section
+            className="home-hero container"
+            id="home-hero"
+            aria-labelledby="home-title"
+          >
             <div className="home-tool-grid" role="group" aria-label="PDFetti tools">
               <Link href="/editor/" className="home-tool-card home-tool-card--annotation">
                 <div className="home-tool-art home-tool-art--annotation" aria-hidden="true">
@@ -234,23 +225,12 @@ export default function Home() {
               </h2>
             </div>
             <Link href="/editor/" className="home-closing-action">
-              Open the editor <ArrowUpRight size={20} aria-hidden="true" />
+              Open the editor
             </Link>
           </div>
         </section>
       </main>
-      <footer className="home-footer">
-        <div className="container home-footer-inner">
-          <Brand />
-          <span>Fill it. Sign it. Download it. No catches.</span>
-          <nav aria-label="Footer">
-            <Link href="/privacy/">Privacy</Link>
-            <Link href="/editor/">Editor</Link>
-            <Link href="/extract-pdf-pages/">Extract pages</Link>
-            <a href={repositoryUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
-          </nav>
-        </div>
-      </footer>
+      <HomeFooter repositoryUrl={repositoryUrl} />
     </div>
   );
 }
