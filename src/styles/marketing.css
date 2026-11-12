@@ -1,10 +1,10 @@
 .home {
   overflow: clip;
-  background: #f8f9fb;
+  background: #f1f2f4;
 }
 
 .home-opening {
-  background: #f8f9fb;
+  background: #f1f2f4;
   color: #25262b;
 }
 
@@ -101,9 +101,9 @@
 .home-tool-card {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid #e5e6ea;
+  border: 1px solid #dedfe4;
   border-radius: 10px;
-  background: #fff;
+  background: #fcfcfd;
   color: #25262b;
   text-decoration: none;
   transition: border-color 0.16s, box-shadow 0.16s, transform 0.16s;
@@ -122,20 +122,20 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #f0f1f4;
+  background: #e8e9ed;
 }
 
 .home-tool-art--annotation {
-  background: linear-gradient(125deg, #f0f1f4, #f5f5f7);
+  background: linear-gradient(125deg, #e8e9ed, #f0f1f3);
 }
 
 .home-tool-art--separation {
-  background: linear-gradient(125deg, #f1f2f5, #f6f6f8);
+  background: linear-gradient(125deg, #e9eaee, #f1f2f4);
 }
 
 .home-tool-art--organization,
 .home-tool-art--merge {
-  background: linear-gradient(125deg, #f0f1f4, #f6f6f8);
+  background: linear-gradient(125deg, #e8e9ed, #f1f2f4);
 }
 
 .home-art-paper {
@@ -324,7 +324,7 @@
 
 .home-product {
   padding: 0 0 88px;
-  background: #f8f9fb;
+  background: #f1f2f4;
 }
 
 .home-product-inner {
@@ -352,7 +352,7 @@
 
 .home-product-frame {
   margin-top: 27px;
-  background: #f1f2f4;
+  background: #e8e9ed;
   border: 1px solid #e3e5e9;
   border-radius: 12px;
   overflow: hidden;
@@ -648,7 +648,7 @@
 }
 
 .home-closing {
-  background: #f8f9fb;
+  background: #f1f2f4;
   border-top: 1px solid #e5e6ea;
   padding: 86px 0 92px;
 }

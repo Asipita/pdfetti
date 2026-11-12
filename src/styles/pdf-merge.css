@@ -4,7 +4,7 @@
   overflow: hidden;
   border: 1px solid #e4e5e9;
   border-radius: 12px;
-  background: #fff;
+  background: #fcfcfd;
   box-shadow: 0 14px 40px rgba(29, 31, 38, 0.07), 0 2px 6px rgba(29, 31, 38, 0.03);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
@@ -59,7 +59,7 @@
   gap: 16px;
   padding: 14px 24px;
   border-bottom: 1px solid #e6e7eb;
-  background: #fff;
+  background: #fcfcfd;
 }
 
 .merge-file-actions {
@@ -102,7 +102,7 @@
 .merge-list-count {
   padding: 7px 10px;
   border-radius: 20px;
-  background: #f1f2f4;
+  background: #e8e9ed;
   color: #5f626b;
   font-size: 12px;
   font-weight: 600;
@@ -131,7 +131,7 @@
   padding: 10px;
   border: 1px solid #e5e6ea;
   border-radius: 9px;
-  background: #fff;
+  background: #fcfcfd;
   transition: border-color 0.12s, background 0.12s;
 }
 
@@ -181,7 +181,7 @@
   height: 26px;
   place-items: center;
   border-radius: 8px;
-  background: #f1f2f4;
+  background: #e8e9ed;
   color: var(--primary);
   font-size: 11px;
   font-weight: 700;
@@ -206,7 +206,7 @@
 
 .merge-drag-handle[draggable="true"]:hover {
   border-color: #e4e5e9;
-  background: #f5f6f8;
+  background: #eceef1;
   color: var(--primary);
 }
 
@@ -223,7 +223,7 @@
   justify-content: center;
   overflow: hidden;
   border-radius: 4px;
-  background: #f1f2f4;
+  background: #e8e9ed;
 }
 
 .merge-file-preview canvas {
@@ -231,7 +231,7 @@
   max-width: 100%;
   max-height: 68px;
   object-fit: contain;
-  background: #fff;
+  background: #fcfcfd;
   box-shadow: 0 1px 4px #271f221c;
 }
 
@@ -288,7 +288,7 @@
 }
 
 .merge-icon-button:hover:not(:disabled) {
-  background: #f1f2f4;
+  background: #e8e9ed;
   color: var(--primary);
 }
 
@@ -331,7 +331,7 @@
   gap: 16px;
   padding: 20px 24px;
   border-top: 1px solid #e6e7eb;
-  background: #f8f9fb;
+  background: #e8e9ed;
 }
 
 .merge-export > div {
