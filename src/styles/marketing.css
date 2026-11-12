@@ -4,9 +4,6 @@
 }
 
 .home-opening {
-  --primary: #f0808b;
-  --primary-hover: #ff9ca5;
-  color: #f4f3f5;
   background:
     radial-gradient(ellipse at 50% -35%, rgba(113, 63, 77, 0.34), transparent 58%),
     linear-gradient(145deg, #29272e, #24252b 72%);
@@ -99,6 +96,9 @@
 }
 
 .home-hero {
+  --primary: #f0808b;
+  --primary-hover: #ff9ca5;
+  color: #f4f3f5;
   padding-top: 38px;
   padding-bottom: 82px;
 }

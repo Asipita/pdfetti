@@ -52,10 +52,9 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <HomeNav repositoryUrl={repositoryUrl} />
-
-      <main>
-        <div className="home-opening">
+      <div className="home-opening">
+        <HomeNav repositoryUrl={repositoryUrl} />
+        <main>
           <section
             className="home-hero container"
             id="home-hero"
@@ -132,7 +131,6 @@ export default function Home() {
             <p>Free, private tools for working with PDFs.</p>
           </div>
         </section>
-      </div>
 
         <section className="home-product" aria-labelledby="product-heading">
           <div className="container home-product-inner">
@@ -229,7 +227,8 @@ export default function Home() {
             </Link>
           </div>
         </section>
-      </main>
+        </main>
+      </div>
       <HomeFooter repositoryUrl={repositoryUrl} />
     </div>
   );
