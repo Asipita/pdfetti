@@ -42,6 +42,10 @@ The **Organize PDF** tool lives at `/organize-pdf/`. It lets people reorder, rot
 
 The **Merge PDFs** tool lives at `/merge-pdf/`. It lets people combine multiple PDFs in a chosen file order and download one document. Each file is limited to 50 MB and the combined selection to 100 MB; processing stays local in the browser.
 
+## Signing Word documents
+
+Open a `.docx` in the editor, select **Add signature**, then draw, type, or upload your signature. Drag it to the field, adjust its size, and download the signed Word copy. Add more signatures to sign multiple fields. The browser embeds each signature as a floating image anchored to nearby text in the original document. Word may paginate complex layouts differently from the browser preview.
+
 ## Editing text
 
 Choose **Text** and click a page to type. Double-click existing text to edit it; click away or press Escape to finish. A selected annotation can be dragged, resized, or moved with the arrow keys (Shift moves farther). Delete or Backspace removes it; Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z undo and redo. Hold Shift while dragging to bypass alignment snapping. Zoom can be set to 50%, 75%, 100%, 125%, 150%, or 200% from the toolbar.

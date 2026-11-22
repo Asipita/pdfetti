@@ -18,7 +18,7 @@ test("marketing page is responsive and editor can export local edits", async ({
   await expect(
     page.getByRole("heading", { name: /Your PDF, finished/ }),
   ).toBeVisible();
-  await expect(page.locator('a[href="https://github.com/asipita/pdfetti"]')).toHaveCount(3);
+  await expect(page.getByRole("navigation", { name: "Footer" }).getByRole("link", { name: "GitHub" })).toHaveAttribute("href", "https://github.com/asipita/pdfetti");
   const structuredData = JSON.parse(
     (await page.locator('script[type="application/ld+json"]').textContent()) || "{}",
   );
@@ -31,6 +31,7 @@ test("marketing page is responsive and editor can export local edits", async ({
     path: join(testInfo.outputDir, "home-desktop.png"),
     fullPage: true,
   });
+  await page.getByRole("link", { name: /Open the editor/ }).first().click();
   await page.locator("input[type=file]").setInputFiles({
     name: "application.pdf",
     mimeType: "application/pdf",
@@ -97,7 +98,7 @@ test("mobile and tablet layouts avoid horizontal overflow", async ({
         width === 390 ? ".home-product-mobile" : ".home-product-desktop",
       ),
     ).toHaveJSProperty("naturalWidth", width === 390 ? 390 : 1440);
-    await expect(page.getByRole("link", { name: /Open source on GitHub/ })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Footer" }).getByRole("link", { name: "GitHub" })).toBeVisible();
     await page.screenshot({
       path: join(testInfo.outputDir, `home-${width}.png`),
       fullPage: true,

@@ -79,7 +79,7 @@ export default function Home() {
               </div>
               <div className="home-tool-card-copy">
                 <span className="home-tool-title">Annotation</span>
-                <p>Fill forms, add text, and sign.</p>
+                <p>Fill PDFs and sign PDF or Word documents.</p>
                 <span className="home-tool-action">Open the editor <ArrowUpRight size={16} aria-hidden="true" /></span>
               </div>
             </Link>

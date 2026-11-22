@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpRight, FileUp, LockKeyhole } from "lucide-react";
-import { savePendingFile, validateFile } from "@/features/pdf/session";
+import { documentAccept, savePendingFile, validateEditorFile } from "@/features/pdf/session";
 import { Button } from "@/components/ui/button";
 export function UploadArea() {
   const input = useRef<HTMLInputElement>(null);
@@ -12,7 +12,7 @@ export function UploadArea() {
   const [over, setOver] = useState(false);
   async function pick(file?: File) {
     if (!file) return;
-    const issue = validateFile(file);
+    const issue = validateEditorFile(file);
     if (issue) {
       setError(issue);
       return;
@@ -44,20 +44,20 @@ export function UploadArea() {
       <input
         ref={input}
         type="file"
-        accept=".pdf,application/pdf"
+        accept={documentAccept}
         className="sr-only"
-        aria-label="Choose a PDF"
+        aria-label="Choose a document"
         onChange={(e) => void pick(e.target.files?.[0])}
       />
       <div className="upload-icon">
         <FileUp size={25} strokeWidth={1.7} />
       </div>
       <div>
-        <strong>Drop your PDF here</strong>
+        <strong>Drop a PDF or Word document here</strong>
         <p>or choose a file to start editing</p>
       </div>
       <Button onClick={() => input.current?.click()} loading={busy}>
-        Choose a PDF <ArrowUpRight size={17} />
+        Choose a document <ArrowUpRight size={17} />
       </Button>
       <p className="upload-foot">
         <LockKeyhole size={14} /> Your file stays in your browser. Up to 50 MB.

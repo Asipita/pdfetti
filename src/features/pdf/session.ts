@@ -32,6 +32,22 @@ export async function takePendingFile(): Promise<File | null> {
   db.close();
   return file;
 }
+export const documentAccept = ".pdf,application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+export function isWordFile(file: File) {
+  return /\.docx$/i.test(file.name) || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+}
+
+export function validateEditorFile(file: File): string | null {
+  if (isWordFile(file)) {
+    if (!file.size) return "This file is empty.";
+    if (file.size > 50 * 1024 * 1024) return "Choose a Word document under 50 MB.";
+    return null;
+  }
+  if (!/\.pdf$/i.test(file.name) && file.type !== "application/pdf") return "Choose a PDF or Word (.docx) file.";
+  return validateFile(file);
+}
+
 export function validateFile(file: File): string | null {
   if (
     !file.name.toLowerCase().endsWith(".pdf") &&

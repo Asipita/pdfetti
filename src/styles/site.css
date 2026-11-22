@@ -1378,11 +1378,6 @@
   font-size: 12px;
   color: #857d80;
 }
-.global-drop {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
 .editor-error {
   margin-top: 20px;
   color: var(--destructive);
@@ -1759,3 +1754,17 @@
     display: none;
   }
 }
+
+.word-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: white;
+  border-bottom: 1px solid #e8e5e6;
+}
+.word-toolbar label { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.word-toolbar input { width: clamp(56px, 14vw, 120px); accent-color: var(--primary); }
+.word-preview { flex: 1; width: 100%; min-height: 0; border: 0; }
+.word-status { padding: 12px 18px; font-size: 14px; }

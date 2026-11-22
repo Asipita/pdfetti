@@ -20,9 +20,10 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Brand } from "@/components/shared/brand";
 import { Button } from "@/components/ui/button";
-import { validateFile, takePendingFile } from "@/features/pdf/session";
+import { documentAccept, isWordFile, validateEditorFile, takePendingFile } from "@/features/pdf/session";
 import { loadPdf } from "@/features/pdf/loader";
 
 import { useEditor } from "../store/use-editor";
@@ -40,7 +41,29 @@ const tools: { id: Tool; label: string; Icon: typeof MousePointer2 }[] = [
   { id: "check", label: "Check", Icon: Check },
   { id: "draw", label: "Draw", Icon: PenLine },
 ];
+const WordEditor = dynamic(() =>
+  import("@/features/word/word-editor").then((module) => module.WordEditor),
+);
+
 export function Editor() {
+  const [initialFile, setInitialFile] = useState<File | null>(null);
+  const [session, setSession] = useState(0);
+  const switchDocument = useCallback((file: File) => {
+    setInitialFile(file);
+    setSession((previous) => previous + 1);
+  }, []);
+  if (initialFile && isWordFile(initialFile)) {
+    return <WordEditor key={session} file={initialFile} onOpen={switchDocument} />;
+  }
+  return <PdfEditor key={session} initialFile={initialFile} onWord={switchDocument} />;
+}
+
+function PdfEditor({ initialFile, onWord }: {
+  initialFile: File | null;
+  onWord: (file: File) => void;
+}) {
+  const openRequest = useRef(0);
+  const pendingFile = useRef<Promise<File | null> | null>(null);
   const input = useRef<HTMLInputElement>(null),
     workspace = useRef<HTMLDivElement>(null),
     pdfRef = useRef<PDFDocumentProxy | null>(null);
@@ -69,9 +92,15 @@ export function Editor() {
   const selected = annotations.find((a) => a.id === selectedId);
   const openFile = useCallback(
     async (next: File) => {
-      const issue = validateFile(next);
+      const issue = validateEditorFile(next);
       if (issue) {
         state.getState().setError(issue);
+        return;
+      }
+      const request = ++openRequest.current;
+      if (isWordFile(next)) {
+        state.getState().clearDocument();
+        onWord(next);
         return;
       }
       setLoading(true);
@@ -90,6 +119,7 @@ export function Editor() {
           doc = await loadPdf(buffer);
         } catch (e) {
           const ex = e as Error;
+          if (request !== openRequest.current) return;
           if (ex.name === "PasswordException") {
             const password = window.prompt(
               "This PDF is password protected. Enter its password:",
@@ -99,36 +129,48 @@ export function Editor() {
             doc = await loadPdf(buffer, password);
           } else throw e;
         }
-        if (doc.isPureXfa)
+        if (request !== openRequest.current) {
+          await doc.destroy();
+          return;
+        }
+        if (doc.isPureXfa) {
+          await doc.destroy();
           throw new Error(
             "This PDF uses XFA forms, which PDFetti cannot safely edit yet.",
           );
-        await pdfRef.current?.destroy();
+        }
+        const previous = pdfRef.current;
         pdfRef.current = doc;
+        void previous?.destroy();
         setPdf(doc);
         state.getState().setDocument(next, buffer, doc.numPages);
         setMobilePages(false);
         workspace.current?.scrollTo({ top: 0 });
       } catch (e) {
-        state
-          .getState()
-          .setError((e as Error).message || "Could not open this PDF.");
+        if (request === openRequest.current) {
+          state.getState().setError((e as Error).message || "Could not open this PDF.");
+        }
       } finally {
-        setLoading(false);
+        if (request === openRequest.current) setLoading(false);
       }
     },
-    [state],
+    [state, onWord],
   );
   useEffect(() => {
-    takePendingFile()
-      .then((f) => {
-        if (f) void openFile(f);
-      })
-      .catch(() => {});
+    if (initialFile) void openFile(initialFile);
+    else {
+      const request = openRequest.current;
+      pendingFile.current ??= takePendingFile();
+      pendingFile.current.then((file) => {
+          if (file && request === openRequest.current) void openFile(file);
+        })
+        .catch(() => {});
+    }
     return () => {
+      openRequest.current++;
       void pdfRef.current?.destroy();
     };
-  }, [openFile]);
+  }, [openFile, initialFile]);
   useEffect(() => {
     const node = workspace.current;
     if (!node) return;
@@ -254,9 +296,9 @@ export function Editor() {
       <input
         ref={input}
         type="file"
-        accept=".pdf,application/pdf"
+        accept={documentAccept}
         className="sr-only"
-        aria-label="Open PDF"
+        aria-label="Open PDF or Word document"
         onChange={(e) => {
           const f = e.target.files?.[0];
           if (f) void openFile(f);
@@ -273,8 +315,8 @@ export function Editor() {
           {pdf && (
             <button
               className="icon-only"
-              aria-label="Open another PDF"
-              title="Open another PDF"
+              aria-label="Open another document"
+              title="Open another document"
               onClick={() => input.current?.click()}
             >
               <FilePlus2 size={17} />
@@ -350,7 +392,11 @@ export function Editor() {
         )}
       </header>
       {!pdf ? (
-        <main className="editor-empty">
+        <main className="editor-empty" onDragOver={e => e.preventDefault()} onDrop={e => {
+          e.preventDefault();
+          const dropped = e.dataTransfer.files[0];
+          if (dropped) void openFile(dropped);
+        }}>
           <div className="empty-inner">
             <Link href="/" className="back-link">
               <ArrowLeft size={16} /> Back to home
@@ -358,30 +404,21 @@ export function Editor() {
             <div className="empty-icon">
               <FilePlus2 size={31} strokeWidth={1.5} />
             </div>
-            <h1>Let’s get this PDF done.</h1>
+            <h1>Open a document</h1>
             <p>
-              Open a PDF to fill fields, add text, sign, and download. Your
+              Fill a PDF or sign a Word (.docx) document. Your
               document stays on this device.
             </p>
             <Button onClick={() => input.current?.click()} loading={loading}>
-              <FilePlus2 size={17} /> Choose a PDF
+              <FilePlus2 size={17} /> Choose a document
             </Button>
-            <span>or drop a PDF anywhere on this page</span>
+            <span>or drop a PDF or .docx file here</span>
             {error && (
               <div role="alert" className="editor-error">
                 {error}
               </div>
             )}
           </div>
-          <div
-            className="global-drop"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              const f = e.dataTransfer.files[0];
-              if (f) void openFile(f);
-            }}
-          />
         </main>
       ) : (
         <>
