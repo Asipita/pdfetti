@@ -20,9 +20,13 @@ import {
 } from "./document";
 
 const frameHtml = `<!doctype html><html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data: blob:; font-src data: blob:; form-action 'none'; base-uri 'none'">
 <style>
 html, body { margin: 0; background: #f4f3f2; }
+html { -webkit-text-size-adjust: none; text-size-adjust: none; }
+#preview-space { position: relative; overflow: clip; }
+#preview { position: absolute; top: 0; width: max-content; transform-origin: top left; }
 #preview .docx-wrapper { padding: 16px 0; gap: 16px; background: transparent; }
 #preview section.docx { flex: none; margin: 0; width: 8.5in; min-height: 11in; padding: 1in; }
 #preview .placed-signature { position: absolute; z-index: 10; box-sizing: border-box; padding: 0; border: 0; background: transparent; touch-action: none; user-select: none; -webkit-user-drag: none; cursor: grab; }
@@ -30,7 +34,7 @@ html, body { margin: 0; background: #f4f3f2; }
 #preview .placed-signature[aria-pressed=true], #preview .placed-signature:focus-visible { outline: 2px dashed #ae3758; }
 #preview .placed-signature:active { cursor: grabbing; }
 #preview a { pointer-events: none; }
-</style></head><body><main id="preview"></main></body></html>`;
+</style></head><body><div id="preview-space"><main id="preview"></main></div></body></html>`;
 
 const clamp = (n: number, max: number) => Math.max(0, Math.min(n, max));
 
@@ -89,6 +93,7 @@ export function WordEditor({
   useEffect(() => {
     if (!frame) return;
     const container = frame.getElementById("preview")!;
+    const space = container.parentElement!;
     let cancelled = false;
     let observer: ResizeObserver | undefined;
     const preventNavigation = (event: Event) => event.preventDefault();
@@ -100,16 +105,19 @@ export function WordEditor({
         await frame.fonts.ready;
         if (cancelled) return;
         const fit = () => {
-          const widest = Math.max(
-            ...result.pages.map((page) => page.offsetWidth),
-          );
-          container.style.zoom = String(
-            Math.min(1, (frame.documentElement.clientWidth - 16) / widest),
-          );
+          // Lay out the full-size Word pages once. Scale the painted pages,
+          // including their text and signatures, to the available width.
+          const width = container.offsetWidth;
+          if (!width || !space.clientWidth) return;
+          const scale = Math.min(1, Math.max(1, space.clientWidth - 16) / width);
+          container.style.transform = `scale(${scale})`;
+          container.style.left = `${(space.clientWidth - width * scale) / 2}px`;
+          space.style.height = `${Math.ceil(container.offsetHeight * scale)}px`;
         };
         fit();
         observer = new ResizeObserver(fit);
-        observer.observe(frame.documentElement);
+        observer.observe(container);
+        observer.observe(space);
         setPreview(result);
       })
       .catch(() => {

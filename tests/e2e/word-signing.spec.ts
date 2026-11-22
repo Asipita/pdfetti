@@ -8,7 +8,7 @@ const rels = "http://schemas.openxmlformats.org/package/2006/relationships";
 const mime =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-async function form() {
+async function form(introduction = "Consent form") {
   const zip = new JSZip();
   zip.file(
     "[Content_Types].xml",
@@ -25,7 +25,7 @@ async function form() {
   zip.file(
     "word/document.xml",
     `<w:document xmlns:w="${w}"><w:body>
-    <w:p><w:r><w:t>Consent form</w:t></w:r></w:p><w:p><w:r><w:br w:type="page"/><w:t>Approval</w:t></w:r></w:p>
+    <w:p><w:pPr><w:spacing w:line="320" w:lineRule="exact"/></w:pPr><w:r><w:rPr><w:sz w:val="24"/></w:rPr><w:t>${introduction}</w:t></w:r></w:p><w:p><w:r><w:br w:type="page"/><w:t>Approval</w:t></w:r></w:p>
     <w:tbl><w:tblPr><w:tblW w:w="9360" w:type="dxa"/></w:tblPr><w:tblGrid><w:gridCol w:w="3600"/><w:gridCol w:w="5760"/></w:tblGrid>
     <w:tr><w:tc><w:tcPr><w:tcW w:w="3600" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>Reviewer</w:t></w:r></w:p></w:tc>
     <w:tc><w:tcPr><w:tcW w:w="5760" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>Signature field</w:t></w:r></w:p></w:tc></w:tr></w:tbl>
@@ -125,7 +125,43 @@ test("drag signatures to Word fields and download an editable signed copy", asyn
 });
 
 test.describe("touch signing", () => {
-  test.use({ hasTouch: true, viewport: { width: 390, height: 844 } });
+  test.use({ isMobile: true, hasTouch: true, viewport: { width: 390, height: 844 } });
+
+  test("a wrapped paragraph keeps its Word layout as the phone rotates", async ({ page }) => {
+    await page.goto("/editor/");
+    const letter = "The team reviewed the project proposal and discussed the technical requirements. ".repeat(6);
+    await page.locator("input[type=file]").setInputFiles({
+      name: "letter.docx", mimeType: mime, buffer: await form(letter),
+    });
+    await expect(page.getByRole("button", { name: "Add signature" })).toBeEnabled();
+    const paper = page.frameLocator('iframe[title="Word document preview"]').locator("section.docx").first();
+    async function layout(width: number, height: number) {
+      await page.setViewportSize({ width, height });
+      await expect.poll(() => paper.evaluate(el => el.getBoundingClientRect().width))
+        .toBeCloseTo(Math.min(816, width - 16), 0);
+      return paper.evaluate(el => {
+        const range = el.ownerDocument.createRange();
+        const text = el.ownerDocument.createTreeWalker(el.querySelector("article p")!, NodeFilter.SHOW_TEXT).nextNode()!;
+        range.selectNodeContents(text);
+        const fragments = Array.from(range.getClientRects()).filter(rect => rect.width > 0);
+        // A preserved trailing space can have its own rectangle on the same line.
+        const lineTops = [...new Set(fragments.map(rect => rect.top))];
+        const scale = el.getBoundingClientRect().width / el.offsetWidth;
+        return {
+          count: lineTops.length,
+          glyphHeight: fragments[0].height / scale,
+          lineStep: (lineTops[1] - lineTops[0]) / scale,
+        };
+      });
+    }
+    const portrait = await layout(390, 844);
+    const landscape = await layout(844, 390);
+    expect(portrait.count).toBeGreaterThan(2);
+    expect(portrait.count).toBe(landscape.count);
+    expect(portrait.glyphHeight).toBeLessThanOrEqual(portrait.lineStep + 1);
+    expect(Math.abs(portrait.glyphHeight - landscape.glyphHeight)).toBeLessThan(0.5);
+    expect(Math.abs(portrait.lineStep - landscape.lineStep)).toBeLessThan(0.5);
+  });
 
   test("draw, drag, resize and reuse a signature on a phone", async ({
     page,
